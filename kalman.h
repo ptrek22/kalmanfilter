@@ -5,8 +5,8 @@
 #include "arm_math.h"                   // ARM::CMSIS:DSP
 
 
-#define _DIM_	8  											// State vector length 
-#define _NME_	6												// Number of measurements 
+#define _DIM_	8  											// System dimension 
+#define _NOI_	6												// Number of inputs
 
 #define EXIT_SUCCES 0
 
@@ -14,6 +14,7 @@ typedef float32_t data_t;
 typedef arm_matrix_instance_f32  array_t ;
 
 #define array_init(a,b,c,d) arm_mat_init_f32(a,b,c,d)
+#define sqrt(a,b) 					arm_sqrt_f32(a, b)
 	
 
 	
@@ -52,8 +53,10 @@ const data_t I3 = 0.1f;
 
 //===============================================================/
 /**
+/**
 *@brief system state vector (matrix)
 **/
+
 
 #define X_ROWS _DIM_
 #define X_COLS 1
@@ -64,13 +67,31 @@ array_t X_k;
 **/
 data_t X_k_data[X_ROWS*X_COLS] = {0};
 
-	
+#define X_Q0 0
+#define X_Q1 1
+#define X_Q2 2
+#define X_Q3 3
+#define X_W1 4
+#define X_W2 5
+#define X_W3 6
+#define X_B 7
+//===============================================================/
+/**
+*@brief system state vector estimate apriori 
+**/
+array_t X_ap_k;
+/**
+*@brief system state vector estimate apriori data array
+**/
+data_t X_ap_k_data[X_ROWS*X_COLS] = {0};
+
+
 //===============================================================/
 /**
 *@brief measurements vector (matrix)
 **/
 
-#define Z_ROWS _NME_
+#define Z_ROWS _NOI_
 #define Z_COLS 1
 
 array_t Z_k;
@@ -79,7 +100,24 @@ array_t Z_k;
 **/
 data_t Z_k_data[Z_ROWS*Z_COLS] = {0};
 
+#define Z_B1 0
+#define Z_B2 1
+#define Z_B3 2
+#define Z_W1 3
+#define Z_W2 4
+#define Z_W3 5
 
+//===============================================================/
+
+/**
+*@brief innovation vector (matrix)
+**/
+
+array_t Y_k;
+/**
+*@brief innovation vector data array
+**/
+data_t Y_k_data[Z_ROWS*Z_COLS] = {0};
 
 //===============================================================/
 /**
@@ -107,8 +145,8 @@ data_t	Qph1_k_data[QPH1_ROWS*QPH1_COLS] =
  /**
 *@breif Measurement noise covariance matrix of phase 1
 **/
-#define RPH1_ROWS _NME_
-#define RPH1_COLS _NME_
+#define RPH1_ROWS _NOI_
+#define RPH1_COLS _NOI_
  
 array_t Rph1_k;
  /**
@@ -148,8 +186,8 @@ data_t	Qph2_k_data[QPH2_ROWS*QPH2_COLS] =
  /**
 *@breif Measurement noise covariance matrix of phase 2
 **/
-#define RPH2_ROWS _NME_
-#define RPH2_COLS _NME_
+#define RPH2_ROWS _NOI_
+#define RPH2_COLS _NOI_
  
 array_t Rph2_k;
  /**
@@ -189,7 +227,7 @@ data_t	A_k_data[A_ROWS*A_COLS] =
 /**
 *@breif Global jacobian of h funciton (H^J) matrix
 **/
-#define H_ROWS _NME_
+#define H_ROWS _NOI_
 #define H_COLS _DIM_
  
 array_t H_k;
@@ -197,7 +235,7 @@ array_t H_k;
  *@brief Global jacoban of h function (H^J) matrix data array
 */
 
-data_t	H_k_data[_NME_*_DIM_] =
+data_t	H_k_data[_NOI_*_DIM_] =
 {0, 0, 0, 0, 0, 0, 0, 0,
  0, 0, 0, 0, 0, 0, 0, 0,
  0, 0, 0, 0, 0, 0, 0, 0,
@@ -228,11 +266,24 @@ data_t	P_k_data[P_ROWS*P_COLS] =
  0, 0, 0, 0, 0, 0, 1, 0,
  0, 0, 0, 0, 0, 0, 0, 1};
 
+//===============================================================/
+/**
+*@breif Global kalman gain matrix
+**/
+#define KG_ROWS _DIM_
+#define KG_COLS _NOI_
+ 
+array_t Kg_k;
+ 
+/**
+*@breif Global kalman gain matrix data array
+**/
+ 
+data_t	Kg_k_data[KG_ROWS*KG_COLS] = {0};
  
 /******************************************************************
 ***************KALMAN FILTER SPECIFIC FUNCTIONS********************
 *******************************************************************
- /*
 *Extended Kalman filter 
 * x = f(x_k-1, u_k-1) + w_k-1;
 * z = h(x_k) + v_k
@@ -242,8 +293,7 @@ data_t	P_k_data[P_ROWS*P_COLS] =
 /**
 *@biref computes f function
 */
-void kalmanF			(array_t* dest,
-									data_t q0,
+void kalmanF		(	data_t q0,
 									data_t q1,
 									data_t q2,
 									data_t q3,
@@ -255,10 +305,10 @@ void kalmanF			(array_t* dest,
 									data_t T2,
 									data_t T3);
 /**
-*@biref computes h function
+*@biref computes output innovation
+*  y = z_k - h(x_ap)
 */
-void kalmanH 			(array_t* dest,
-									data_t q0,
+void kalmanInv  (	data_t q0,
 									data_t q1,
 									data_t q2,
 									data_t q3,
@@ -269,8 +319,7 @@ void kalmanH 			(array_t* dest,
 /**
 *@biref computes Jacobian of h function
 */
-void jacobianHph1 (array_t* dest,
-									data_t q0,
+void jacobianHph1(data_t q0,
 									data_t q1,
 									data_t q2,
 									data_t q3,
@@ -292,10 +341,13 @@ void kallmanInit();
 /**
 *@breif reads data from sensors
 */
-void getSensors();
+void kalmanGetOutputs();
 
-
-
+/**
+*@breif state vector initalizatnion 
+*calls getSenors()
+*/
+void kalmanInitStateVec();
 
 #endif
 
