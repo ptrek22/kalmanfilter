@@ -22,20 +22,30 @@ Dialog DLL:      TARMCM1.DLL V1.12.0.0
  
 <h2>Project:</h2>
 F:\Studia\Kraksat\Kalman\Kalman\kalman.uvprojx
-Project File Date:  03/12/2017
+Project File Date:  03/22/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'E:\Keil_v5\ARM\ARMCC\Bin'
-Build target 'Target 1'
+Rebuild target 'Target 1'
+assembling startup_MKL25Z4.s...
+compiling system_MKL25Z4.c...
 compiling kalman.c...
-kalman.h(247): warning:  #1295-D: Deprecated declaration kallmanInit - give arg types
-  void kallmanInit ();
-kalman.c: 1 warning, 0 errors
+kalman.h(58): warning:  #9-D: nested comment is not allowed
+  /**
+kalman.h(447): warning:  #9-D: nested comment is not allowed
+  /**
+kalman.h(451): warning:  #1295-D: Deprecated declaration kallmanInit - give arg types
+  void kallmanInit();
+kalman.h(456): warning:  #1295-D: Deprecated declaration kalmanGetSensors - give arg types
+  void kalmanGetSensors();
+kalman.h(462): warning:  #1295-D: Deprecated declaration kalmanInitializeStateVec - give arg types
+  void kalmanInitializeStateVec();
+kalman.c: 5 warnings, 0 errors
 linking...
 .\Objects\kalman.axf: Error: L6218E: Undefined symbol main (referred from __rtentry2.o).
 Not enough information to list image symbols.
 Finished: 1 information, 0 warning and 1 error messages.
-".\Objects\kalman.axf" - 1 Error(s), 1 Warning(s).
+".\Objects\kalman.axf" - 1 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -68,8 +78,8 @@ Package Vendor: Keil
 
    * Component: Keil::Device:Startup:2.5.0
       Source file:   Device\Source\system_MKL25Z4.c
-      Include file:  Device\Source\system_MKL25Z4.h
       Source file:   Device\Source\ARM\startup_MKL25Z4.s
+      Include file:  Device\Source\system_MKL25Z4.h
 Target not created.
 Build Time Elapsed:  00:00:01
 </pre>

@@ -3,6 +3,7 @@
 
 #include "MKL25Z4.h"                    // Device header
 #include "arm_math.h"                   // ARM::CMSIS:DSP
+#include "math.h"
 
 
 #define _DIM_	8  											// System dimension 
@@ -13,8 +14,11 @@
 typedef float32_t data_t;
 typedef arm_matrix_instance_f32  array_t ;
 
-#define array_init(a,b,c,d) arm_mat_init_f32(a,b,c,d)
-#define sqrt(a,b) 					arm_sqrt_f32(a, b)
+#define array_init(a,b,c,d) 	(arm_mat_init_f32(a,b,c,d))
+#define sqrtf(a,b) 						(arm_sqrt_f32(a, b))
+#define array_transpose(a,b)	(arm_mat_trans_f32(a,b))
+#define array_mult(a,b,c)     (arm_mat_mult_f32(a,b,c))
+#define array_add(a,b,c)      (arm_mat_add_f32(a,b,c))
 	
 
 	
@@ -79,11 +83,14 @@ data_t X_k_data[X_ROWS*X_COLS] = {0};
 /**
 *@brief system state vector estimate apriori 
 **/
+#define X_AP_ROWS X_ROWS
+#define X_AP_COLS X_COLS
+
 array_t X_ap_k;
 /**
 *@brief system state vector estimate apriori data array
 **/
-data_t X_ap_k_data[X_ROWS*X_COLS] = {0};
+data_t X_ap_k_data[X_AP_ROWS*X_AP_COLS] = {0};
 
 
 //===============================================================/
@@ -112,12 +119,14 @@ data_t Z_k_data[Z_ROWS*Z_COLS] = {0};
 /**
 *@brief innovation vector (matrix)
 **/
+#define Y_ROWS Z_ROWS
+#define Y_COLS Z_COLS
 
 array_t Y_k;
 /**
 *@brief innovation vector data array
 **/
-data_t Y_k_data[Z_ROWS*Z_COLS] = {0};
+data_t Y_k_data[Y_ROWS*Y_COLS] = {0};
 
 //===============================================================/
 /**
@@ -131,14 +140,14 @@ array_t Qph1_k;
 *@breif System noise covariance matrix phase 1 data array
 **/
 data_t	Qph1_k_data[QPH1_ROWS*QPH1_COLS] =
-{1, 0, 0, 0, 0, 0, 0, 0,
- 0, 1, 0, 0, 0, 0, 0, 0,
- 0, 0, 1, 0, 0, 0, 0, 0,
- 0, 0, 0, 1, 0, 0, 0, 0,
- 0, 0, 0, 0, 1, 0, 0, 0,
- 0, 0, 0, 0, 0, 1, 0, 0, 
- 0, 0, 0, 0, 0, 0, 1, 0,
- 0, 0, 0, 0, 0, 0, 0, 1};
+{0.00762129, 0.00436500, 0.00436500, 0.00436500, 0.00436500, 8.73e-4, 8.73e-4, 8.73e-7,
+ 0.00436500, 0.00250000, 0.00250000, 0.00250000, 0.00250000, 5e-4, 		5e-4, 	 5e-7,
+ 0.00436500, 0.00250000, 0.00250000, 0.00250000, 0.00250000, 5e-4, 		5e-4,		 5e-7,
+ 0.00436500, 0.00250000, 0.00250000, 0.00250000, 0.00250000, 5e-4, 		5e-4,    5e-7,
+ 8.73e-4,		 5e-4, 			 5e-4,			 5e-4, 			 5e-4, 			 1e-4, 	  1e-4,    1e-7,
+ 8.73e-4,		 5e-4, 			 5e-4, 			 5e-4,       5e-4,			 1e-4, 		1e-4,    1e-7,
+ 8.73e-4, 	 5e-4, 			 5e-4, 			 5e-4,       5e-4, 			 1e-4, 		1e-4,		 1e-7,
+ 8.73e-7, 	 5e-7, 			 5e-7, 			 5e-7,       5e-7, 			 1e-7, 		1e-7,		 1e-10};
 
  
  //===============================================================/
@@ -153,12 +162,12 @@ array_t Rph1_k;
 *@breif SMeasurement noise covariance matrix phase 1 data array
 **/ 
 data_t	Rph1_k_data[RPH1_COLS*RPH1_ROWS] =
-{1, 0, 0, 0, 0, 0, 
- 0, 1, 0, 0, 0, 0, 
- 0, 0, 1, 0, 0, 0, 
- 0, 0, 0, 1, 0, 0, 
- 0, 0, 0, 0, 1, 0, 
- 0, 0, 0, 0, 0, 1};
+{3.844e-13,				  0, 				 0, 			 0, 			 0, 
+ 0, 		 3.844e-13, 0,				 0, 			 0, 			 0, 
+ 0, 		 0,         3.844e-13, 0, 			 0,     	 0, 
+ 0, 		 0, 				0, 				 1.369e-5, 0, 			 0, 
+ 0, 		 0, 				0, 				 0,        1.369e-5, 0, 
+ 0, 		 0, 				0, 				 0, 			 0, 			 1.369e-5};
 
  
 //===============================================================/
@@ -223,6 +232,15 @@ data_t	A_k_data[A_ROWS*A_COLS] =
  0, 0, 0, 0, 0, 0, 1, 0,
  0, 0, 0, 0, 0, 0, 0, 1};
 
+//---------------------------------------------------------------/
+ 
+array_t A_k_t;
+/**
+ *@brief Global jacoban of f function transposition 
+*/
+data_t A_k_t_data[A_COLS*A_ROWS] = {0}; 
+
+ 
 //===============================================================/
 /**
 *@breif Global jacobian of h funciton (H^J) matrix
@@ -235,13 +253,21 @@ array_t H_k;
  *@brief Global jacoban of h function (H^J) matrix data array
 */
 
-data_t	H_k_data[_NOI_*_DIM_] =
+data_t	H_k_data[H_ROWS*H_COLS] =
 {0, 0, 0, 0, 0, 0, 0, 0,
  0, 0, 0, 0, 0, 0, 0, 0,
  0, 0, 0, 0, 0, 0, 0, 0,
  0, 0, 0, 0, 0, 1, 0, 0,
  0, 0, 0, 0, 0, 0, 1, 0,
  0, 0, 0, 0, 0, 0, 0, 1};
+
+//---------------------------------------------------------------/
+ 
+array_t H_k_t;
+/**
+ *@brief Global jacoban of h function transposition 
+*/
+data_t H_k_t_data[H_COLS*H_ROWS] = {0}; 
 
 //===============================================================/
 /**
@@ -268,6 +294,29 @@ data_t	P_k_data[P_ROWS*P_COLS] =
 
 //===============================================================/
 /**
+*@breif Global state prediction covariance matrix estimate apriori
+**/
+#define P_AP_ROWS P_ROWS
+#define P_AP_COLS P_COLS
+ 
+array_t P_ap_k;
+ 
+/**
+*@breif Global state pretiction covariance matrix estimate apriori data array
+**/
+ 
+data_t	P_ap_k_data[P_AP_ROWS*P_AP_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+//===============================================================/
+/**
 *@breif Global kalman gain matrix
 **/
 #define KG_ROWS _DIM_
@@ -280,7 +329,200 @@ array_t Kg_k;
 **/
  
 data_t	Kg_k_data[KG_ROWS*KG_COLS] = {0};
+
+//===============================================================/
+/**
+*@brief Scaling matrix for better conditioning
+**/
+#define S_ROWS _NOI_
+#define S_COLS _NOI_
+
+array_t S_k;
+
+/**
+*@breif Scaling matrix data array
+**/
  
+data_t S_k_data[S_ROWS*S_COLS] =
+{10e6, 0, 	 0, 	 0,				 0, 			   0, 
+ 0, 	 10e6, 0, 	 0,				 0,     		 0, 
+ 0, 	 0, 	 10e6, 0, 			 0,          0, 
+ 0, 	 0, 	 0, 	 31.6228,	 0,   			 0,         //10*sqrt(10)
+ 0, 	 0, 	 0, 	 0, 			 31.6228,    0,
+ 0,		 0,		 0, 	 0,				 0, 			   31.6228};	
+
+//===============================================================/
+/**
+*@brief V matrix 
+**/
+#define V_ROWS _NOI_
+#define V_COLS _NOI_
+
+array_t V_k;
+
+/**
+*@breif Scaling matrix data array
+**/
+ 
+data_t V_k_data[S_ROWS*S_COLS] = 
+{1, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0,
+ 0, 0, 0, 0, 1, 0, 
+ 0, 0, 0, 0, 0, 1};
+
+//===============================================================/
+/**
+*@breif W matrix
+**/
+#define W_ROWS _DIM_
+#define W_COLS _DIM_
+
+array_t W_k;
+/**
+*@breif W matrix data array
+**/
+data_t	W_k_data[W_ROWS*W_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+//---------------------------------------------------------------/
+ 
+array_t W_k_t;
+/**
+ *@brief Global jacoban of h function transposition 
+*/
+data_t W_k_t_data[W_COLS*W_ROWS] = {0}; 
+
+ 
+ //===============================================================/
+/**
+*@breif Temporary matrix for storing results
+**/
+#define TEMP_1_ROWS _DIM_
+#define TEMP_1_COLS _DIM_
+
+array_t Temp_1;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_1_data[TEMP_1_ROWS*TEMP_1_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+ //===============================================================/
+/**
+*@breif Temporary matrix for storing results
+**/
+#define TEMP_2_ROWS _DIM_
+#define TEMP_2_COLS _DIM_
+
+array_t Temp_2;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_2_data[TEMP_2_ROWS*TEMP_2_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+ //===============================================================/
+/**
+*@breif Temporary matrix for storing results
+**/
+#define TEMP_3_ROWS _DIM_
+#define TEMP_3_COLS _DIM_
+
+array_t Temp_3;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_3_data[TEMP_3_ROWS*TEMP_3_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+ //===============================================================/
+ /**
+*@breif Temporary matrix for storing results - Num of inputs x Num of inputs
+**/
+#define TEMP_4_ROWS _NOI_
+#define TEMP_4_COLS _NOI_
+
+array_t Temp_4;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_4_data[TEMP_4_ROWS*TEMP_4_COLS] =
+{1, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0,
+ 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 1};
+
+  //===============================================================/
+ /**
+*@breif Temporary matrix for storing results - Num of inputs x Num of inputs
+**/
+#define TEMP_5_ROWS _NOI_
+#define TEMP_5_COLS _NOI_
+
+array_t Temp_5;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_5_data[TEMP_5_ROWS*TEMP_5_COLS] =
+{1, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0,
+ 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 1};
+
+ //===============================================================/
+ /**
+*@breif Temporary matrix for storing results - Num of inputs x Num of inputs
+**/
+#define TEMP_6_ROWS _NOI_
+#define TEMP_6_COLS _NOI_
+
+array_t Temp_6;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_6_data[TEMP_6_ROWS*TEMP_6_COLS] =
+{1, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0,
+ 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 1};
+
+
 /******************************************************************
 ***************KALMAN FILTER SPECIFIC FUNCTIONS********************
 *******************************************************************
@@ -341,13 +583,17 @@ void kallmanInit();
 /**
 *@breif reads data from sensors
 */
-void kalmanGetOutputs();
+void kalmanGetSensors();
 
 /**
 *@breif state vector initalizatnion 
-*calls getSenors()
+*calls kalmanGetSenors()
 */
-void kalmanInitStateVec();
+void kalmanInitializeStateVec();
 
+/**
+*@breif Kalman filter iteration
+*/
+void kalmanStep();
 #endif
 

@@ -6,17 +6,36 @@ Section Cross References
 
     kalman.o(i.jacobianAph1) refers to fdiv.o(.text) for __aeabi_fdiv
     kalman.o(i.jacobianAph1) refers to fmul.o(x$fpl$fmul) for __aeabi_fmul
+    kalman.o(i.jacobianAph1) refers to kalman.o(.data) for A_k
     kalman.o(i.jacobianHph1) refers to fmul.o(x$fpl$fmul) for __aeabi_fmul
     kalman.o(i.jacobianHph1) refers to faddsub.o(x$fpl$fsub) for __aeabi_fsub
     kalman.o(i.jacobianHph1) refers to faddsub.o(x$fpl$fadd) for __aeabi_fadd
+    kalman.o(i.jacobianHph1) refers to arm_mat_trans_f32.o(.text) for arm_mat_trans_f32
+    kalman.o(i.jacobianHph1) refers to kalman.o(.data) for H_k
     kalman.o(i.kalmanF) refers to fmul.o(x$fpl$fmul) for __aeabi_fmul
     kalman.o(i.kalmanF) refers to faddsub.o(x$fpl$fsub) for __aeabi_fsub
     kalman.o(i.kalmanF) refers to fdiv.o(.text) for __aeabi_fdiv
     kalman.o(i.kalmanF) refers to faddsub.o(x$fpl$fadd) for __aeabi_fadd
-    kalman.o(i.kalmanH) refers to fmul.o(x$fpl$fmul) for __aeabi_fmul
-    kalman.o(i.kalmanH) refers to faddsub.o(x$fpl$fsub) for __aeabi_fsub
-    kalman.o(i.kalmanH) refers to faddsub.o(x$fpl$fadd) for __aeabi_fadd
-    kalman.o(i.kalmanH) refers to fdiv.o(.text) for __aeabi_fdiv
+    kalman.o(i.kalmanF) refers to kalman.o(.data) for X_ap_k
+    kalman.o(i.kalmanGetOtputs) refers to kalman.o(.data) for Z_k
+    kalman.o(i.kalmanInit) refers to arm_mat_init_f32.o(.text) for arm_mat_init_f32
+    kalman.o(i.kalmanInit) refers to arm_mat_trans_f32.o(.text) for arm_mat_trans_f32
+    kalman.o(i.kalmanInit) refers to kalman.o(i.kalmanInitializeStateVec) for kalmanInitializeStateVec
+    kalman.o(i.kalmanInit) refers to kalman.o(.bss) for X_k_data
+    kalman.o(i.kalmanInit) refers to kalman.o(.data) for X_k
+    kalman.o(i.kalmanInitializeStateVec) refers to fmul.o(x$fpl$fmul) for __aeabi_fmul
+    kalman.o(i.kalmanInitializeStateVec) refers to faddsub.o(x$fpl$fadd) for __aeabi_fadd
+    kalman.o(i.kalmanInitializeStateVec) refers to frlef.o(x$fpl$frleqf) for __aeabi_cfrcmple
+    kalman.o(i.kalmanInitializeStateVec) refers to sqrtf.o(i.sqrtf) for sqrtf
+    kalman.o(i.kalmanInitializeStateVec) refers to fdiv.o(.text) for __aeabi_fdiv
+    kalman.o(i.kalmanInitializeStateVec) refers to kalman.o(.data) for Z_k
+    kalman.o(i.kalmanInv) refers to fmul.o(x$fpl$fmul) for __aeabi_fmul
+    kalman.o(i.kalmanInv) refers to faddsub.o(x$fpl$fsub) for __aeabi_fsub
+    kalman.o(i.kalmanInv) refers to faddsub.o(x$fpl$frsb) for __aeabi_frsub
+    kalman.o(i.kalmanInv) refers to faddsub.o(x$fpl$fadd) for __aeabi_fadd
+    kalman.o(i.kalmanInv) refers to fdiv.o(.text) for __aeabi_fdiv
+    kalman.o(i.kalmanInv) refers to kalman.o(.data) for Z_k
+    kalman.o(i.updateStateVec) refers to kalman.o(.data) for X_k
     startup_mkl25z4.o(STACK) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
     startup_mkl25z4.o(HEAP) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
     startup_mkl25z4.o(RESET) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
@@ -28,7 +47,7 @@ Section Cross References
     startup_mkl25z4.o(.text) refers to __main.o(!!!main) for __main
     startup_mkl25z4.o(.text) refers to startup_mkl25z4.o(HEAP) for Heap_Mem
     startup_mkl25z4.o(.text) refers to startup_mkl25z4.o(STACK) for Stack_Mem
-    system_mkl25z4.o(i.SystemCoreClockUpdate) refers to aeabi_sdiv.o(.text) for __aeabi_uidivmod
+    system_mkl25z4.o(i.SystemCoreClockUpdate) refers to aeabi_sdivfast.o(.text) for __aeabi_uidivmod
     system_mkl25z4.o(i.SystemCoreClockUpdate) refers to system_mkl25z4.o(i.__ARM_common_switch8) for __ARM_common_switch8
     system_mkl25z4.o(i.SystemCoreClockUpdate) refers to system_mkl25z4.o(.data) for SystemCoreClock
     __main.o(!!!main) refers to __rtentry.o(.ARM.Collect$$rtentry$$00000000) for __rt_entry
@@ -43,6 +62,20 @@ Section Cross References
     fdiv.o(.text) refers to fdiv.o(.constdata) for .constdata
     fdiv.o(.constdata) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
     fmul.o(x$fpl$fmul) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
+    frlef.o(x$fpl$frleqf) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
+    frlef.o(x$fpl$frleqf) refers to fcmpin.o(.text) for __fpl_fcmp_InfNaN
+    sqrtf.o(i.__softfp_sqrtf) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
+    sqrtf.o(i.__softfp_sqrtf) refers to fsqrt.o(.text) for _fsqrt
+    sqrtf.o(i.__softfp_sqrtf) refers to _rserrno.o(.text) for __set_errno
+    sqrtf.o(i.sqrtf) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
+    sqrtf.o(i.sqrtf) refers to fsqrt.o(.text) for _fsqrt
+    sqrtf.o(i.sqrtf) refers to _rserrno.o(.text) for __set_errno
+    sqrtf_x.o(i.____softfp_sqrtf$lsc) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
+    sqrtf_x.o(i.____softfp_sqrtf$lsc) refers to _rserrno.o(.text) for __set_errno
+    sqrtf_x.o(i.____softfp_sqrtf$lsc) refers to fsqrt.o(.text) for _fsqrt
+    sqrtf_x.o(i.__sqrtf$lsc) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
+    sqrtf_x.o(i.__sqrtf$lsc) refers to _rserrno.o(.text) for __set_errno
+    sqrtf_x.o(i.__sqrtf$lsc) refers to fsqrt.o(.text) for _fsqrt
     __rtentry.o(.ARM.Collect$$rtentry$$00000000) refers (Special) to __rtentry2.o(.ARM.Collect$$rtentry$$0000000A) for __rt_entry_li
     __rtentry.o(.ARM.Collect$$rtentry$$00000000) refers (Special) to __rtentry2.o(.ARM.Collect$$rtentry$$0000000D) for __rt_entry_main
     __rtentry.o(.ARM.Collect$$rtentry$$00000000) refers (Special) to __rtentry2.o(.ARM.Collect$$rtentry$$0000000C) for __rt_entry_postli_1
@@ -50,6 +83,11 @@ Section Cross References
     __rtentry.o(.ARM.Collect$$rtentry$$00000000) refers (Special) to __rtentry2.o(.ARM.Collect$$rtentry$$00000002) for __rt_entry_presh_1
     __rtentry.o(.ARM.Collect$$rtentry$$00000000) refers (Special) to __rtentry4.o(.ARM.Collect$$rtentry$$00000004) for __rt_entry_sh
     aeabi_idiv0_sigfpe.o(.text) refers to rt_div0.o(.text) for __rt_div0
+    _rserrno.o(.text) refers to rt_errno_addr_intlibspace.o(.text) for __aeabi_errno_addr
+    fcmpin.o(.text) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
+    fcmpin.o(.text) refers to cmpret.o(.text) for __fpl_cmpreturn
+    fcmpin.o(.text) refers to fnan2.o(.text) for __fpl_fcheck_NaN2
+    fsqrt.o(.text) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
     __rtentry2.o(.ARM.Collect$$rtentry$$00000008) refers to boardinit2.o(.text) for _platform_post_stackheap_init
     __rtentry2.o(.ARM.Collect$$rtentry$$0000000A) refers to libinit.o(.ARM.Collect$$libinit$$00000000) for __rt_lib_init
     __rtentry2.o(.ARM.Collect$$rtentry$$0000000B) refers to boardinit3.o(.text) for _platform_post_lib_init
@@ -62,6 +100,12 @@ Section Cross References
     __rtentry4.o(.ARM.Collect$$rtentry$$00000004) refers to sys_stackheap_outer.o(.text) for __user_setup_stackheap
     __rtentry4.o(.ARM.exidx) refers to __rtentry4.o(.ARM.Collect$$rtentry$$00000004) for .ARM.Collect$$rtentry$$00000004
     rt_div0.o(.text) refers to defsig_fpe_outer.o(.text) for __rt_SIGFPE
+    rt_errno_addr.o(.text) refers to rt_errno_addr.o(.bss) for __aeabi_errno_addr_data
+    rt_errno_addr_intlibspace.o(.text) refers to libspace.o(.bss) for __libspace_start
+    cmpret.o(.text) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
+    fnan2.o(.text) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
+    fnan2.o(.text) refers to retnan.o(.text) for __fpl_return_NaN
+    libspace.o(.text) refers to libspace.o(.bss) for __libspace_start
     sys_stackheap_outer.o(.text) refers to libspace.o(.text) for __user_perproc_libspace
     sys_stackheap_outer.o(.text) refers to startup_mkl25z4.o(.text) for __user_initial_stackheap
     sys_stackheap_outer.o(__vectab_stack_and_reset_area) refers to tempstk.o(.text) for __temporary_stack_top
@@ -91,7 +135,8 @@ Section Cross References
     libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$0000001D) for __rt_lib_init_signal_1
     libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$00000025) for __rt_lib_init_stdio_1
     libinit.o(.ARM.Collect$$libinit$$00000000) refers (Special) to libinit2.o(.ARM.Collect$$libinit$$0000000C) for __rt_lib_init_user_alloc_1
-    libspace.o(.text) refers to libspace.o(.bss) for __libspace_start
+    retnan.o(.text) refers (Special) to usenofp.o(x$fpl$usenofp) for __I$use$fp
+    retnan.o(.text) refers to cmpret.o(.text) for __fpl_cmpreturn
     rtexit.o(.ARM.Collect$$rtexit$$00000000) refers (Special) to rtexit2.o(.ARM.Collect$$rtexit$$00000004) for __rt_exit_exit
     rtexit.o(.ARM.Collect$$rtexit$$00000000) refers (Special) to rtexit2.o(.ARM.Collect$$rtexit$$00000003) for __rt_exit_ls
     rtexit.o(.ARM.Collect$$rtexit$$00000000) refers (Special) to rtexit2.o(.ARM.Collect$$rtexit$$00000002) for __rt_exit_prels_1
@@ -155,19 +200,30 @@ Removing Unused input sections from the image.
 
     Removing kalman.o(.rev16_text), (4 bytes).
     Removing kalman.o(.revsh_text), (4 bytes).
-    Removing kalman.o(i.jacobianAph1), (496 bytes).
-    Removing kalman.o(i.jacobianHph1), (426 bytes).
-    Removing kalman.o(i.kalmanF), (468 bytes).
-    Removing kalman.o(i.kalmanH), (194 bytes).
+    Removing kalman.o(i.jacobianAph1), (532 bytes).
+    Removing kalman.o(i.jacobianHph1), (472 bytes).
+    Removing kalman.o(i.kalmanF), (488 bytes).
+    Removing kalman.o(i.kalmanGetOtputs), (44 bytes).
+    Removing kalman.o(i.kalmanInit), (304 bytes).
+    Removing kalman.o(i.kalmanInitializeStateVec), (472 bytes).
+    Removing kalman.o(i.kalmanInv), (240 bytes).
+    Removing kalman.o(i.updateStateVec), (64 bytes).
+    Removing kalman.o(.bss), (752 bytes).
     Removing kalman.o(.constdata), (16 bytes).
-    Removing kalman.o(.data), (1672 bytes).
+    Removing kalman.o(.data), (2560 bytes).
     Removing system_mkl25z4.o(.rev16_text), (4 bytes).
     Removing system_mkl25z4.o(.revsh_text), (4 bytes).
     Removing system_mkl25z4.o(i.SystemCoreClockUpdate), (400 bytes).
     Removing system_mkl25z4.o(.data), (4 bytes).
+    Removing arm_mat_init_f32.o(.rev16_text), (4 bytes).
+    Removing arm_mat_init_f32.o(.revsh_text), (4 bytes).
+    Removing arm_mat_init_f32.o(.text), (8 bytes).
+    Removing arm_mat_trans_f32.o(.rev16_text), (4 bytes).
+    Removing arm_mat_trans_f32.o(.revsh_text), (4 bytes).
+    Removing arm_mat_trans_f32.o(.text), (132 bytes).
     Removing system_mkl25z4.o(i.__ARM_common_switch8), (28 bytes).
 
-13 unused section(s) (total 3720 bytes) removed from the image.
+24 unused section(s) (total 6548 bytes) removed from the image.
 
 ==============================================================================
 
@@ -181,72 +237,74 @@ Memory Map of the image
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x00000000   0x000000c0   Data   RO           80    RESET               startup_mkl25z4.o
-    0x000000c0   0x00000008   Code   RO          130  * !!!main             c_p.l(__main.o)
-    0x000000c8   0x00000002   Code   RO          180    .ARM.Collect$$libinit$$00000000  c_p.l(libinit.o)
-    0x000000ca   0x00000000   Code   RO          194    .ARM.Collect$$libinit$$00000002  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          196    .ARM.Collect$$libinit$$00000004  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          199    .ARM.Collect$$libinit$$0000000A  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          201    .ARM.Collect$$libinit$$0000000C  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          203    .ARM.Collect$$libinit$$0000000E  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          206    .ARM.Collect$$libinit$$00000011  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          208    .ARM.Collect$$libinit$$00000013  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          210    .ARM.Collect$$libinit$$00000015  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          212    .ARM.Collect$$libinit$$00000017  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          214    .ARM.Collect$$libinit$$00000019  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          216    .ARM.Collect$$libinit$$0000001B  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          218    .ARM.Collect$$libinit$$0000001D  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          220    .ARM.Collect$$libinit$$0000001F  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          222    .ARM.Collect$$libinit$$00000021  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          224    .ARM.Collect$$libinit$$00000023  c_p.l(libinit2.o)
-    0x000000ca   0x00000000   Code   RO          226    .ARM.Collect$$libinit$$00000025  c_p.l(libinit2.o)
-    0x000000ca   0x00000008   Code   RO          228    .ARM.Collect$$libinit$$00000027  c_p.l(libinit2.o)
-    0x000000d2   0x00000000   Code   RO          232    .ARM.Collect$$libinit$$0000002E  c_p.l(libinit2.o)
-    0x000000d2   0x00000000   Code   RO          234    .ARM.Collect$$libinit$$00000030  c_p.l(libinit2.o)
-    0x000000d2   0x00000000   Code   RO          236    .ARM.Collect$$libinit$$00000032  c_p.l(libinit2.o)
-    0x000000d2   0x00000002   Code   RO          237    .ARM.Collect$$libinit$$00000033  c_p.l(libinit2.o)
-    0x000000d4   0x00000002   Code   RO          268    .ARM.Collect$$libshutdown$$00000000  c_p.l(libshutdown.o)
-    0x000000d6   0x00000000   Code   RO          294    .ARM.Collect$$libshutdown$$00000002  c_p.l(libshutdown2.o)
-    0x000000d6   0x00000000   Code   RO          296    .ARM.Collect$$libshutdown$$00000004  c_p.l(libshutdown2.o)
-    0x000000d6   0x00000000   Code   RO          299    .ARM.Collect$$libshutdown$$00000007  c_p.l(libshutdown2.o)
-    0x000000d6   0x00000000   Code   RO          302    .ARM.Collect$$libshutdown$$0000000A  c_p.l(libshutdown2.o)
-    0x000000d6   0x00000000   Code   RO          304    .ARM.Collect$$libshutdown$$0000000C  c_p.l(libshutdown2.o)
-    0x000000d6   0x00000000   Code   RO          307    .ARM.Collect$$libshutdown$$0000000F  c_p.l(libshutdown2.o)
-    0x000000d6   0x00000002   Code   RO          308    .ARM.Collect$$libshutdown$$00000010  c_p.l(libshutdown2.o)
-    0x000000d8   0x00000000   Code   RO          143    .ARM.Collect$$rtentry$$00000000  c_p.l(__rtentry.o)
-    0x000000d8   0x00000000   Code   RO          150    .ARM.Collect$$rtentry$$00000002  c_p.l(__rtentry2.o)
-    0x000000d8   0x00000006   Code   RO          162    .ARM.Collect$$rtentry$$00000004  c_p.l(__rtentry4.o)
-    0x000000de   0x00000000   Code   RO          152    .ARM.Collect$$rtentry$$00000009  c_p.l(__rtentry2.o)
-    0x000000de   0x00000004   Code   RO          153    .ARM.Collect$$rtentry$$0000000A  c_p.l(__rtentry2.o)
-    0x000000e2   0x00000000   Code   RO          155    .ARM.Collect$$rtentry$$0000000C  c_p.l(__rtentry2.o)
-    0x000000e2   0x00000008   Code   RO          156    .ARM.Collect$$rtentry$$0000000D  c_p.l(__rtentry2.o)
-    0x000000ea   0x00000002   Code   RO          185    .ARM.Collect$$rtexit$$00000000  c_p.l(rtexit.o)
-    0x000000ec   0x00000000   Code   RO          241    .ARM.Collect$$rtexit$$00000002  c_p.l(rtexit2.o)
-    0x000000ec   0x00000004   Code   RO          242    .ARM.Collect$$rtexit$$00000003  c_p.l(rtexit2.o)
-    0x000000f0   0x00000006   Code   RO          243    .ARM.Collect$$rtexit$$00000004  c_p.l(rtexit2.o)
+    0x00000000   0x000000c0   Data   RO          105    RESET               startup_mkl25z4.o
+    0x000000c0   0x00000008   Code   RO          217  * !!!main             c_p.l(__main.o)
+    0x000000c8   0x00000002   Code   RO          295    .ARM.Collect$$libinit$$00000000  c_p.l(libinit.o)
+    0x000000ca   0x00000000   Code   RO          308    .ARM.Collect$$libinit$$00000002  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          310    .ARM.Collect$$libinit$$00000004  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          313    .ARM.Collect$$libinit$$0000000A  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          315    .ARM.Collect$$libinit$$0000000C  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          317    .ARM.Collect$$libinit$$0000000E  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          320    .ARM.Collect$$libinit$$00000011  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          322    .ARM.Collect$$libinit$$00000013  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          324    .ARM.Collect$$libinit$$00000015  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          326    .ARM.Collect$$libinit$$00000017  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          328    .ARM.Collect$$libinit$$00000019  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          330    .ARM.Collect$$libinit$$0000001B  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          332    .ARM.Collect$$libinit$$0000001D  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          334    .ARM.Collect$$libinit$$0000001F  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          336    .ARM.Collect$$libinit$$00000021  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          338    .ARM.Collect$$libinit$$00000023  c_p.l(libinit2.o)
+    0x000000ca   0x00000000   Code   RO          340    .ARM.Collect$$libinit$$00000025  c_p.l(libinit2.o)
+    0x000000ca   0x00000008   Code   RO          342    .ARM.Collect$$libinit$$00000027  c_p.l(libinit2.o)
+    0x000000d2   0x00000000   Code   RO          346    .ARM.Collect$$libinit$$0000002E  c_p.l(libinit2.o)
+    0x000000d2   0x00000000   Code   RO          348    .ARM.Collect$$libinit$$00000030  c_p.l(libinit2.o)
+    0x000000d2   0x00000000   Code   RO          350    .ARM.Collect$$libinit$$00000032  c_p.l(libinit2.o)
+    0x000000d2   0x00000002   Code   RO          351    .ARM.Collect$$libinit$$00000033  c_p.l(libinit2.o)
+    0x000000d4   0x00000002   Code   RO          382    .ARM.Collect$$libshutdown$$00000000  c_p.l(libshutdown.o)
+    0x000000d6   0x00000000   Code   RO          408    .ARM.Collect$$libshutdown$$00000002  c_p.l(libshutdown2.o)
+    0x000000d6   0x00000000   Code   RO          410    .ARM.Collect$$libshutdown$$00000004  c_p.l(libshutdown2.o)
+    0x000000d6   0x00000000   Code   RO          413    .ARM.Collect$$libshutdown$$00000007  c_p.l(libshutdown2.o)
+    0x000000d6   0x00000000   Code   RO          416    .ARM.Collect$$libshutdown$$0000000A  c_p.l(libshutdown2.o)
+    0x000000d6   0x00000000   Code   RO          418    .ARM.Collect$$libshutdown$$0000000C  c_p.l(libshutdown2.o)
+    0x000000d6   0x00000000   Code   RO          421    .ARM.Collect$$libshutdown$$0000000F  c_p.l(libshutdown2.o)
+    0x000000d6   0x00000002   Code   RO          422    .ARM.Collect$$libshutdown$$00000010  c_p.l(libshutdown2.o)
+    0x000000d8   0x00000000   Code   RO          240    .ARM.Collect$$rtentry$$00000000  c_p.l(__rtentry.o)
+    0x000000d8   0x00000000   Code   RO          253    .ARM.Collect$$rtentry$$00000002  c_p.l(__rtentry2.o)
+    0x000000d8   0x00000006   Code   RO          265    .ARM.Collect$$rtentry$$00000004  c_p.l(__rtentry4.o)
+    0x000000de   0x00000000   Code   RO          255    .ARM.Collect$$rtentry$$00000009  c_p.l(__rtentry2.o)
+    0x000000de   0x00000004   Code   RO          256    .ARM.Collect$$rtentry$$0000000A  c_p.l(__rtentry2.o)
+    0x000000e2   0x00000000   Code   RO          258    .ARM.Collect$$rtentry$$0000000C  c_p.l(__rtentry2.o)
+    0x000000e2   0x00000008   Code   RO          259    .ARM.Collect$$rtentry$$0000000D  c_p.l(__rtentry2.o)
+    0x000000ea   0x00000002   Code   RO          299    .ARM.Collect$$rtexit$$00000000  c_p.l(rtexit.o)
+    0x000000ec   0x00000000   Code   RO          355    .ARM.Collect$$rtexit$$00000002  c_p.l(rtexit2.o)
+    0x000000ec   0x00000004   Code   RO          356    .ARM.Collect$$rtexit$$00000003  c_p.l(rtexit2.o)
+    0x000000f0   0x00000006   Code   RO          357    .ARM.Collect$$rtexit$$00000004  c_p.l(rtexit2.o)
     0x000000f6   0x00000002   PAD
-    0x000000f8   0x00000040   Code   RO           82  * .text               startup_mkl25z4.o
-    0x00000138   0x00000006   Code   RO          128    .text               c_p.l(heapauxi.o)
-    0x0000013e   0x0000003e   Code   RO          166    .text               c_p.l(sys_stackheap_outer.o)
-    0x0000017c   0x00000010   Code   RO          169    .text               c_p.l(exit.o)
-    0x0000018c   0x00000008   Code   RO          181    .text               c_p.l(libspace.o)
-    0x00000194   0x0000000c   Code   RO          189    .text               c_p.l(defsig_exit.o)
-    0x000001a0   0x0000000c   Code   RO          238    .text               c_p.l(sys_exit.o)
-    0x000001ac   0x00000034   Code   RO          249    .text               c_p.l(defsig_general.o)
-    0x000001e0   0x00000008   Code   RO          251    .text               c_p.l(argv_veneer.o)
-    0x000001e8   0x0000000c   Code   RO          255    .text               c_p.l(sys_wrch.o)
-    0x000001f4   0x00000002   Code   RO          257    .text               c_p.l(use_no_semi.o)
-    0x000001f6   0x00000000   Code   RO          259    .text               c_p.l(indicate_semi.o)
-    0x000001f6   0x00000132   Code   RO          264    .text               c_p.l(_get_argv_nomalloc.o)
-    0x00000328   0x0000001a   Code   RO          269    .text               c_p.l(sys_command.o)
-    0x00000342   0x00000004   Code   RO          271    .text               c_p.l(hrguard.o)
-    0x00000346   0x00000002   PAD
-    0x00000348   0x00000050   Code   RO          277    .text               c_p.l(defsig_rtmem_inner.o)
-    0x00000398   0x0000000c   Code   RO          279    .text               c_p.l(defsig_rtmem_outer.o)
-    0x000003a4   0x0000000c   Code   RO           91    i.SystemInit        system_mkl25z4.o
-    0x000003b0   0x00000000   Data   RO          309    Region$$Table       anon$$obj.o
-    0x000003b0   0x00000050   PAD
-    0x00000400   0x00000010   Code   RO           81    .ARM.__at_0x400     startup_mkl25z4.o
+    0x000000f8   0x00000040   Code   RO          107  * .text               startup_mkl25z4.o
+    0x00000138   0x00000006   Code   RO          215    .text               c_p.l(heapauxi.o)
+    0x0000013e   0x00000002   PAD
+    0x00000140   0x00000008   Code   RO          278    .text               c_p.l(libspace.o)
+    0x00000148   0x0000003e   Code   RO          281    .text               c_p.l(sys_stackheap_outer.o)
+    0x00000186   0x00000010   Code   RO          284    .text               c_p.l(exit.o)
+    0x00000196   0x0000000c   Code   RO          303    .text               c_p.l(defsig_exit.o)
+    0x000001a2   0x00000002   PAD
+    0x000001a4   0x0000000c   Code   RO          352    .text               c_p.l(sys_exit.o)
+    0x000001b0   0x00000034   Code   RO          363    .text               c_p.l(defsig_general.o)
+    0x000001e4   0x00000008   Code   RO          365    .text               c_p.l(argv_veneer.o)
+    0x000001ec   0x0000000c   Code   RO          369    .text               c_p.l(sys_wrch.o)
+    0x000001f8   0x00000002   Code   RO          371    .text               c_p.l(use_no_semi.o)
+    0x000001fa   0x00000000   Code   RO          373    .text               c_p.l(indicate_semi.o)
+    0x000001fa   0x00000132   Code   RO          378    .text               c_p.l(_get_argv_nomalloc.o)
+    0x0000032c   0x0000001a   Code   RO          383    .text               c_p.l(sys_command.o)
+    0x00000346   0x00000004   Code   RO          385    .text               c_p.l(hrguard.o)
+    0x0000034a   0x00000002   PAD
+    0x0000034c   0x00000050   Code   RO          391    .text               c_p.l(defsig_rtmem_inner.o)
+    0x0000039c   0x0000000c   Code   RO          393    .text               c_p.l(defsig_rtmem_outer.o)
+    0x000003a8   0x0000000c   Code   RO          116    i.SystemInit        system_mkl25z4.o
+    0x000003b4   0x00000000   Data   RO          423    Region$$Table       anon$$obj.o
+    0x000003b4   0x0000004c   PAD
+    0x00000400   0x00000010   Code   RO          106    .ARM.__at_0x400     startup_mkl25z4.o
 
 
     Execution Region ER_RW (Base: 0x1ffff000, Size: 0x00000000, Max: 0xffffffff, ABSOLUTE)
@@ -258,7 +316,7 @@ Memory Map of the image
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x1ffff000   0x00000060   Zero   RW          182    .bss                c_p.l(libspace.o)
-    0x1ffff060   0x00000000   Zero   RW           79    HEAP                startup_mkl25z4.o
-    0x1ffff060   0x00000100   Zero   RW           78    STACK               startup_mkl25z4.o
+    0x1ffff000   0x00000060   Zero   RW          279    .bss                c_p.l(libspace.o)
+    0x1ffff060   0x00000000   Zero   RW          104    HEAP                startup_mkl25z4.o
+    0x1ffff060   0x00000100   Zero   RW          103    STACK               startup_mkl25z4.o
 

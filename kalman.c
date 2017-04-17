@@ -71,6 +71,10 @@ void jacobianHph1(data_t q0,
 //	H_k.pData[Z_W3*H_COLS + X_W2] =  0;
 //	H_k.pData[Z_W3*H_COLS + X_W3] =  0;
 //	H_k.pData[Z_W3*H_COLS + X_B]  =  1;
+
+
+//Compute transpose
+array_transpose(&H_k, &H_k_t);
 }
 
 /*****************************************************/
@@ -164,6 +168,9 @@ void jacobianAph1(data_t q0,
 //	A_k.pData[X_B*A_COLS + X_W2] =  0;
 //	A_k.pData[X_B*A_COLS + X_W3] =  0;
 //	A_k.pData[X_B*A_COLS + X_B]  =  1;
+
+//Compute transpose
+array_transpose(&A_k, &A_k_t);	
 }
 
 /*******************************************************************/
@@ -215,20 +222,33 @@ void kalmanInit()
 {
  //Matrix initialization
 	array_init(&X_k, X_ROWS, X_COLS, X_k_data);							//State vector
-	array_init(&X_ap_k, X_ROWS, X_COLS, X_ap_k_data);				//State vector apriori estimate
+	array_init(&X_ap_k, X_AP_ROWS, X_AP_COLS, X_ap_k_data);				//State vector apriori estimate
 	array_init(&Z_k, Z_ROWS, Z_COLS, Z_k_data);							//Measurement vector
-	array_init(&Y_k, Z_ROWS, Z_COLS, Y_k_data);							//Measurement innovation
+	array_init(&Y_k, Y_ROWS, Y_COLS, Y_k_data);							//Measurement innovation
 	array_init(&Qph1_k, QPH1_ROWS, QPH1_COLS, Qph1_k_data);	//System noise covariance matrix of phase 1
 	array_init(&Rph1_k, RPH1_ROWS, RPH1_COLS, Rph1_k_data);	//Measurement noise covariance matrix of phase 1
 	array_init(&Qph2_k, QPH2_ROWS, QPH2_COLS, Qph2_k_data);	//System noise covariance matrix of phase 2
 	array_init(&Rph2_k, RPH2_ROWS, RPH2_COLS, Rph2_k_data); //Measurement noise covariance matrix of phase 2
 	array_init(&A_k, A_ROWS, A_COLS, A_k_data);							//Global jacobian of f
-	array_init(&H_k, H_ROWS, H_COLS, H_k_data);							//Global jacobian of h 
+	array_init(&A_k_t, A_COLS, A_ROWS, A_k_t_data);					//Global jacobian of h transpositnion
+	array_init(&H_k, H_ROWS, H_COLS, H_k_data);							//Global jacobian of h
+	array_init(&H_k_t, H_COLS, H_ROWS, H_k_t_data);					//Global jacobian of h transpositnion
 	array_init(&P_k, P_ROWS, P_COLS, P_k_data);							//Global state pretiction covariance matrix
 	array_init(&Kg_k, KG_ROWS, KG_COLS, Kg_k_data);					//Global kalman gain
+	array_init(&Temp_1, TEMP_1_ROWS, TEMP_1_COLS, Temp_1_data);		  //Temp matrix 1
+	array_init(&Temp_2, TEMP_2_ROWS, TEMP_2_COLS, Temp_2_data);		  //Temp matrix 2
+	array_init(&Temp_3, TEMP_3_ROWS, TEMP_3_COLS, Temp_3_data);		  //Temp matrix 3
+	array_init(&Temp_4, TEMP_4_ROWS, TEMP_4_COLS, Temp_4_data);		  //Temp matrix 4 [NOI*NOI]
+	array_init(&Temp_5, TEMP_5_ROWS, TEMP_5_COLS, Temp_5_data);		  //Temp matrix 5 [NOI*NOI]
+	array_init(&Temp_6, TEMP_6_ROWS, TEMP_6_COLS, Temp_6_data);		  //Temp matrix 4 [NOI*NOI]
+	
+	//Copy initial vaules to transposition matrices
+	array_transpose(&H_k, &H_k_t);													//Global jacobian of h transpositnion
+	array_transpose(&A_k, &A_k_t);													//Global jacobian of f transpositnion
+	array_transpose(&W_k, &W_k_t);													//Global jacobian of f transpositnion
 	
 	//State Vector initialization 
-	kalmanInitStateVec();
+	kalmanInitializeStateVec();
 
 }
 
@@ -247,7 +267,7 @@ void kalmanGetOtputs()
 
 //******************************************************************
 
-void updateStateVec(array_t* dest,
+void updateStateVec(
 									data_t q0,
 									data_t q1,
 									data_t q2,
@@ -281,26 +301,26 @@ void kalmanInitializeStateVec()
 	
 	//X_B - is used in further calculations
 	//q0k = sqrt((B3 +Bk)/(2*Bk));
-	sqrt(Z_k.pData[Z_B1]*Z_k.pData[Z_B1] +
+	sqrtf(Z_k.pData[Z_B1]*Z_k.pData[Z_B1] +
 			 Z_k.pData[Z_B2]*Z_k.pData[Z_B2] +
 			 Z_k.pData[Z_B3]*Z_k.pData[Z_B3],
 			&(X_k.pData[X_B]));
 	
 	//Q0
 	//Q0k = sqrt((B3 +Bk)/(2*Bk))
-	sqrt(Z_k.pData[Z_B3] + X_k.pData[X_B],
+	sqrtf(Z_k.pData[Z_B3] + X_k.pData[X_B],
 			&(X_k.pData[X_Q0]));
 	X_k.pData[X_Q0] /= 2*X_k.pData[X_B];
 	
 	//Q1
 	//q1K =B2 * sqrt(1/(2*Bk * (Bk + B3)))
-	sqrt(1/(2*(X_k.pData[X_B])*(X_k.pData[X_B] + Z_k.pData[Z_B3])),
+	sqrtf(1/(2*(X_k.pData[X_B])*(X_k.pData[X_B] + Z_k.pData[Z_B3])),
 			&(X_k.pData[X_Q1]));
 	X_k.pData[X_Q1] *= Z_k.pData[Z_B2];
 	
 	//Q2
 	//q2k = -B1 * sqrt(1/(2*Bk * (Bk + B3)))
-	sqrt(1/(2*X_k.pData[X_B]*(X_k.pData[X_B] + Z_k.pData[Z_B3])),
+	sqrtf(1/(2*X_k.pData[X_B]*(X_k.pData[X_B] + Z_k.pData[Z_B3])),
 			&(X_k.pData[X_Q2]));
 	X_k.pData[X_Q2] *= -Z_k.pData[Z_B1];
 	
@@ -321,3 +341,51 @@ void kalmanInitializeStateVec()
 	X_k.pData[X_W3] = Z_k.pData[Z_W3];
 }
 
+//*********************************************************************
+void kalmanStep()
+{
+	//Get state vector apriori estimate
+	kalmanF(X_k.pData[X_Q0],
+					X_k.pData[X_Q1],
+					X_k.pData[X_Q2],
+					X_k.pData[X_Q3],
+					X_k.pData[X_W1],
+					X_k.pData[X_W2],
+					X_k.pData[X_W3],
+					X_k.pData[X_B],
+					0,
+					0,
+					0);
+	
+	//Get F jacobian
+	jacobianAph1(X_k.pData[X_Q0],
+							 X_k.pData[X_Q1],
+							 X_k.pData[X_Q2],
+							 X_k.pData[X_Q3],
+							 X_k.pData[X_W1],
+							 X_k.pData[X_W2],
+							 X_k.pData[X_W3],
+							 X_k.pData[X_B]);
+							 
+	//Get P estimate apriori	
+	//Pkm = Ak * Pk * (Ak') + Wk * Qph1 * Wk'
+	array_mult(&A_k, 		&P_k, 		&Temp_1); //  Temp_1 = (Ak * Pk)    	 [n*n]*[n*n] = [n*n]
+	array_mult(&Temp_1, &A_k_t,	  &Temp_2); //  Temp_2 = (Temp_1*Ak') 	 [n*n]*[n*n] = [n*n] - first part of the sum
+	array_mult(&W_k, 		&Qph1_k,	&Temp_1); //	Temp_1 = (Wk * Qph1) 		 [n*n]*[n*n] = [n*n]
+	array_mult(&Temp_1, &Qph1_k,	&Temp_3); //	Temp_3 = (Temp_1*Qph1')  [n*n]*[n*n] = [n*n] - second part of the sum
+	array_add(&Temp_1, &Temp_2,   &P_ap_k); //  P_ap_k = Temp_1 + Temp_3 [n*n] + [n*n]
+	
+	
+	//Get H jacobian
+	jacobianHph1(X_k.pData[X_Q0],
+							 X_k.pData[X_Q1],
+							 X_k.pData[X_Q2],
+							 X_k.pData[X_Q3],
+							 X_k.pData[X_W1],
+							 X_k.pData[X_W2],
+							 X_k.pData[X_W3],
+							 X_k.pData[X_B]);
+							 
+	//Computing Kalman gain
+	
+}
