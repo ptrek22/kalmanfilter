@@ -14,11 +14,15 @@
 typedef float32_t data_t;
 typedef arm_matrix_instance_f32  array_t ;
 
+
+//Data type specific macros
 #define array_init(a,b,c,d) 	(arm_mat_init_f32(a,b,c,d))
 #define sqrtf(a,b) 						(arm_sqrt_f32(a, b))
 #define array_transpose(a,b)	(arm_mat_trans_f32(a,b))
 #define array_mult(a,b,c)     (arm_mat_mult_f32(a,b,c))
 #define array_add(a,b,c)      (arm_mat_add_f32(a,b,c))
+#define array_inv(a,b)				(arm_mat_inverse_f32(a,b))
+#define array_sub(a,b,c)      (arm_mat_sub_f32(a,b,c))
 	
 
 	
@@ -79,6 +83,54 @@ data_t X_k_data[X_ROWS*X_COLS] = {0};
 #define X_W2 5
 #define X_W3 6
 #define X_B 7
+
+//===============================================================/
+/**
+*@brief system  state temp vector 1(matrix)
+**/
+
+
+#define X_T1_ROWS _DIM_
+#define X_T1_COLS 1
+
+array_t X_t1_k;
+/**
+*@brief system state temp vector 1 data array
+**/
+data_t X_t1_k_data[X_T1_ROWS*X_T1_COLS] = {0};
+
+#define X_T1_Q0 0
+#define X_T1_Q1 1
+#define X_T1_Q2 2
+#define X_T1_Q3 3
+#define X_T1_W1 4
+#define X_T1_W2 5
+#define X_T1_W3 6
+#define X_T1_B  7
+
+//===============================================================/
+/**
+*@brief system  state temp vector 2 (matrix)
+**/
+
+
+#define X_T2_ROWS _DIM_
+#define X_T2_COLS 1
+
+array_t X_t2_k;
+/**
+*@brief system state temp vector 2 data array
+**/
+data_t X_t2_k_data[X_T2_ROWS*X_T2_COLS] = {0};
+
+#define X_T2_Q0 0
+#define X_T2_Q1 1
+#define X_T2_Q2 2
+#define X_T2_Q3 3
+#define X_T2_W1 4
+#define X_T2_W2 5
+#define X_T2_W3 6
+#define X_T2_B  7
 //===============================================================/
 /**
 *@brief system state vector estimate apriori 
@@ -361,7 +413,7 @@ data_t S_k_data[S_ROWS*S_COLS] =
 array_t V_k;
 
 /**
-*@breif Scaling matrix data array
+*@breif Vk data array
 **/
  
 data_t V_k_data[S_ROWS*S_COLS] = 
@@ -371,6 +423,14 @@ data_t V_k_data[S_ROWS*S_COLS] =
  0, 0, 0, 1, 0, 0,
  0, 0, 0, 0, 1, 0, 
  0, 0, 0, 0, 0, 1};
+
+//---------------------------------------------------------------/
+ 
+array_t V_k_t;
+/**
+ *@brief Vk transposition 
+*/
+data_t V_k_t_data[V_COLS*V_ROWS] = {0}; 
 
 //===============================================================/
 /**
@@ -467,10 +527,10 @@ data_t	Temp_3_data[TEMP_3_ROWS*TEMP_3_COLS] =
 
  //===============================================================/
  /**
-*@breif Temporary matrix for storing results - Num of inputs x Num of inputs
+*@breif Temporary matrix for storing results - Num of inputs x Num of states
 **/
 #define TEMP_4_ROWS _NOI_
-#define TEMP_4_COLS _NOI_
+#define TEMP_4_COLS _DIM_
 
 array_t Temp_4;
 /**
@@ -522,6 +582,24 @@ data_t	Temp_6_data[TEMP_6_ROWS*TEMP_6_COLS] =
  0, 0, 0, 0, 1, 0,
  0, 0, 0, 0, 0, 1};
 
+ //===============================================================/
+ /**
+*@breif Temporary matrix for storing results - Num of inputs x Num of inputs
+**/
+#define TEMP_7_ROWS _NOI_
+#define TEMP_7_COLS _NOI_
+
+array_t Temp_7;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_7_data[TEMP_7_ROWS*TEMP_7_COLS] =
+{1, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0,
+ 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 1};
 
 /******************************************************************
 ***************KALMAN FILTER SPECIFIC FUNCTIONS********************
@@ -571,9 +649,10 @@ void jacobianHph1(data_t q0,
 									data_t B);
 
 
+
 /******************************************************************
 ***************KALMAN FILTER API FUNCTIONS*************************
-*******************************************************************
+*******************************************************************/
 /**
 *@breif initialization of Kalman filter in terms of data structures
 *Initializes arm_math arrays and ...
