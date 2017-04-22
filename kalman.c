@@ -1,6 +1,455 @@
 #define ARM_MATH_CM0PLUS
 #include "kalman.h"
 
+
+
+/********************************************************
+****************MODEL PARAMTERES*************************
+*********************************************************/
+
+/**
+*@breif Global sample time
+*/
+ data_t sampleTime = 0.1f;	
+
+/**
+*@breif Moment of inertia  on Xaxis 
+*/
+ data_t I1 = 0.1f;
+/**
+*@breif Moment of inertia  on Yaxis 
+*/
+ data_t I2 = 0.1f;
+/**
+*@breif Moment of inertia  on Zaxis 
+*/
+ data_t I3 = 0.1f;						
+
+
+
+/********************************************************
+*************INITIALIZATION OF DATA STUCTURES************
+*********************************************************/
+
+//===============================================================/
+/**
+*@brief system state vector (matrix)
+**/
+array_t X_k;
+/**
+*@brief system state vector data array
+**/
+data_t X_k_data[X_ROWS*X_COLS] = {0};
+
+//===============================================================/
+/**
+*@brief system  state temp vector 1(matrix)
+**/
+array_t X_t1_k;
+/**
+*@brief system state temp vector 1 data array
+**/
+data_t X_t1_k_data[X_T1_ROWS*X_T1_COLS] = {0};
+
+//===============================================================/
+/**
+*@brief system  state temp vector 2 (matrix)
+**/
+array_t X_t2_k;
+/**
+*@brief system state temp vector 2 data array
+**/
+data_t X_t2_k_data[X_T2_ROWS*X_T2_COLS] = {0};
+
+//===============================================================/
+/**
+*@brief system state vector estimate apriori 
+**/
+array_t X_ap_k;
+/**
+*@brief system state vector estimate apriori data array
+**/
+data_t X_ap_k_data[X_AP_ROWS*X_AP_COLS] = {0};
+
+
+//===============================================================/
+/**
+*@brief measurements vector (matrix)
+**/
+array_t Z_k;
+/**
+*@brief measurements vector data array
+**/
+data_t Z_k_data[Z_ROWS*Z_COLS] = {0};
+
+//===============================================================/
+
+/**
+*@brief innovation vector (matrix)
+**/
+array_t Y_k;
+/**
+*@brief innovation vector data array
+**/
+data_t Y_k_data[Y_ROWS*Y_COLS] = {0};
+
+//===============================================================/
+/**
+*@breif System noise covariance matrix of phase 1
+**/
+array_t Qph1_k;
+/**
+*@breif System noise covariance matrix phase 1 data array
+**/
+data_t	Qph1_k_data[QPH1_ROWS*QPH1_COLS] =
+{0.00762129, 0.00436500, 0.00436500, 0.00436500, 0.00436500, 8.73e-4, 8.73e-4, 8.73e-7,
+ 0.00436500, 0.00250000, 0.00250000, 0.00250000, 0.00250000, 5e-4, 		5e-4, 	 5e-7,
+ 0.00436500, 0.00250000, 0.00250000, 0.00250000, 0.00250000, 5e-4, 		5e-4,		 5e-7,
+ 0.00436500, 0.00250000, 0.00250000, 0.00250000, 0.00250000, 5e-4, 		5e-4,    5e-7,
+ 8.73e-4,		 5e-4, 			 5e-4,			 5e-4, 			 5e-4, 			 1e-4, 	  1e-4,    1e-7,
+ 8.73e-4,		 5e-4, 			 5e-4, 			 5e-4,       5e-4,			 1e-4, 		1e-4,    1e-7,
+ 8.73e-4, 	 5e-4, 			 5e-4, 			 5e-4,       5e-4, 			 1e-4, 		1e-4,		 1e-7,
+ 8.73e-7, 	 5e-7, 			 5e-7, 			 5e-7,       5e-7, 			 1e-7, 		1e-7,		 1e-10};
+
+ 
+ //===============================================================/
+ /**
+*@breif Measurement noise covariance matrix of phase 1
+**/
+array_t Rph1_k;
+ /**
+*@breif SMeasurement noise covariance matrix phase 1 data array
+**/ 
+data_t	Rph1_k_data[RPH1_COLS*RPH1_ROWS] =
+{3.844e-13,				  0, 				 0, 			 0, 			 0, 
+ 0, 		 3.844e-13, 0,				 0, 			 0, 			 0, 
+ 0, 		 0,         3.844e-13, 0, 			 0,     	 0, 
+ 0, 		 0, 				0, 				 1.369e-5, 0, 			 0, 
+ 0, 		 0, 				0, 				 0,        1.369e-5, 0, 
+ 0, 		 0, 				0, 				 0, 			 0, 			 1.369e-5};
+
+ 
+//===============================================================/
+/**
+*@breif System noise covariance matrix of phase 2
+**/
+array_t Qph2_k;
+ /**
+*@breif System noise covariance matrix phase 2 data array
+**/
+data_t	Qph2_k_data[QPH2_ROWS*QPH2_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+ //===============================================================/
+ /**
+*@breif Measurement noise covariance matrix of phase 2
+**/
+array_t Rph2_k;
+ /**
+ *@breif Measurement noise covariance matrix phase 2 data array
+*/
+data_t	Rph2_k_data[QPH2_ROWS*QPH2_COLS] =
+{1, 0, 0, 0, 0, 0, 
+ 0, 1, 0, 0, 0, 0, 
+ 0, 0, 1, 0, 0, 0, 
+ 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 1, 0, 
+ 0, 0, 0, 0, 0, 1};
+
+//===============================================================/
+/**
+*@breif Global jacobian of f funciton (A^J) matirx
+**/
+array_t A_k;
+/**
+*@breif Global jacobian of f funciton (A^J) matrix data array
+**/
+ 
+data_t	A_k_data[A_ROWS*A_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+//---------------------------------------------------------------/
+ 
+array_t A_k_t;
+/**
+ *@brief Global jacoban of f function transposition 
+*/
+data_t A_k_t_data[A_COLS*A_ROWS] = {0}; 
+
+ 
+//===============================================================/
+/**
+*@breif Global jacobian of h funciton (H^J) matrix
+**/
+array_t H_k;
+/**
+ *@brief Global jacoban of h function (H^J) matrix data array
+*/
+
+data_t	H_k_data[H_ROWS*H_COLS] =
+{0, 0, 0, 0, 0, 0, 0, 0,
+ 0, 0, 0, 0, 0, 0, 0, 0,
+ 0, 0, 0, 0, 0, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0,
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+//---------------------------------------------------------------/
+ 
+array_t H_k_t;
+/**
+ *@brief Global jacoban of h function transposition 
+*/
+data_t H_k_t_data[H_COLS*H_ROWS] = {0}; 
+
+//===============================================================/
+/**
+*@breif Global state prediction covariance matrix
+**/
+array_t P_k;
+/**
+*@breif Global state pretiction covariance matrix data array
+**/
+ 
+data_t	P_k_data[P_ROWS*P_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+//===============================================================/
+/**
+*@breif Global state prediction covariance matrix estimate apriori
+**/
+array_t P_ap_k;
+/**
+*@breif Global state pretiction covariance matrix estimate apriori data array
+**/
+ 
+data_t	P_ap_k_data[P_AP_ROWS*P_AP_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+//===============================================================/
+/**
+*@breif Global kalman gain matrix
+**/
+array_t Kg_k;
+/**
+*@breif Global kalman gain matrix data array
+**/
+ 
+data_t	Kg_k_data[KG_ROWS*KG_COLS] = {0};
+
+//===============================================================/
+/**
+*@brief Scaling matrix for better conditioning
+**/
+array_t S_k;
+/**
+*@breif Scaling matrix data array
+**/
+ 
+data_t S_k_data[S_ROWS*S_COLS] =
+{10e6, 0, 	 0, 	 0,				 0, 			   0, 
+ 0, 	 10e6, 0, 	 0,				 0,     		 0, 
+ 0, 	 0, 	 10e6, 0, 			 0,          0, 
+ 0, 	 0, 	 0, 	 31.6228,	 0,   			 0,         //10*sqrt(10)
+ 0, 	 0, 	 0, 	 0, 			 31.6228,    0,
+ 0,		 0,		 0, 	 0,				 0, 			   31.6228};	
+
+//===============================================================/
+/**
+*@brief V matrix 
+**/
+array_t V_k;
+/**
+*@breif Vk data array
+**/
+ 
+data_t V_k_data[S_ROWS*S_COLS] = 
+{1, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0,
+ 0, 0, 0, 0, 1, 0, 
+ 0, 0, 0, 0, 0, 1};
+
+//---------------------------------------------------------------/
+ 
+array_t V_k_t;
+/**
+ *@brief Vk transposition 
+*/
+data_t V_k_t_data[V_COLS*V_ROWS] = {0}; 
+
+//===============================================================/
+/**
+*@breif W matrix
+**/
+array_t W_k;
+/**
+*@breif W matrix data array
+**/
+data_t	W_k_data[W_ROWS*W_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+//---------------------------------------------------------------/
+ 
+array_t W_k_t;
+/**
+ *@brief Global jacoban of h function transposition 
+*/
+data_t W_k_t_data[W_COLS*W_ROWS] = {0};  
+ //===============================================================/
+/**
+*@breif Temporary matrix for storing results
+**/
+array_t Temp_1;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_1_data[TEMP_1_ROWS*TEMP_1_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+ //===============================================================/
+/**
+*@breif Temporary matrix for storing results
+**/
+array_t Temp_2;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_2_data[TEMP_2_ROWS*TEMP_2_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+ //===============================================================/
+/**
+*@breif Temporary matrix for storing results
+**/
+array_t Temp_3;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_3_data[TEMP_3_ROWS*TEMP_3_COLS] =
+{1, 0, 0, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0, 0, 0,
+ 0, 0, 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 0, 0, 1, 0, 0, 
+ 0, 0, 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 0, 0, 1};
+
+ //===============================================================/
+ /**
+*@breif Temporary matrix for storing results - Num of inputs x Num of states
+**/
+array_t Temp_4;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_4_data[TEMP_4_ROWS*TEMP_4_COLS] =
+{1, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0,
+ 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 1};
+
+  //===============================================================/
+ /**
+*@breif Temporary matrix for storing results - Num of inputs x Num of inputs
+**/
+array_t Temp_5;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_5_data[TEMP_5_ROWS*TEMP_5_COLS] =
+{1, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0,
+ 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 1};
+
+ //===============================================================/
+ /**
+*@breif Temporary matrix for storing results - Num of inputs x Num of inputs
+**/
+array_t Temp_6;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_6_data[TEMP_6_ROWS*TEMP_6_COLS] =
+{1, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0,
+ 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 1};
+
+ //===============================================================/
+ /**
+*@breif Temporary matrix for storing results - Num of inputs x Num of inputs
+**/
+array_t Temp_7;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_7_data[TEMP_7_ROWS*TEMP_7_COLS] =
+{1, 0, 0, 0, 0, 0,
+ 0, 1, 0, 0, 0, 0,
+ 0, 0, 1, 0, 0, 0,
+ 0, 0, 0, 1, 0, 0,
+ 0, 0, 0, 0, 1, 0,
+ 0, 0, 0, 0, 0, 1};
+
 void jacobianHph1(data_t q0,
 									data_t q1,
 									data_t q2,
@@ -218,7 +667,7 @@ void kalmanInv	 (data_t q0,
 
 //****************************************************************** 
 
-void kalmanInit()
+void kalmanInit(void)
 {
  //Matrix initialization
 	array_init(&X_k, X_ROWS, X_COLS, X_k_data);							//State vector
@@ -260,7 +709,7 @@ void kalmanInit()
 
 //******************************************************************
 
-void kalmanGetOtputs()
+void kalmanGetSensors(void)
 {
 	Z_k.pData[Z_B1] = 0;   //B1
 	Z_k.pData[Z_B2] = 0;   //B2
@@ -274,7 +723,7 @@ void kalmanGetOtputs()
 
 //*********************************************************************
 
-void kalmanInitializeStateVec()
+void kalmanInitializeStateVec(void)
 {
 	
 	//Request data from sensors 
@@ -323,7 +772,7 @@ void kalmanInitializeStateVec()
 }
 
 //*********************************************************************
-void kalmanStep()
+void kalmanStep(void)
 {
 	//Get state vector apriori estimate ---------------------------------
 	kalmanF(X_k.pData[X_Q0],
@@ -395,7 +844,7 @@ void kalmanStep()
 	//Update state vector---------------------------------------------
 	//xk = xkm + Kk * (zk - h(q0k, q1k, q2k, q3k, w1k, w2k, w3k, Bk));
 	//                 ______________________________________________ - innovation - Y_k vecotr
-	kalmanGetOtputs();				 //Update Z_k
+	kalmanGetSensors();				 //Update Z_k
 	kalmanInv(X_k.pData[X_Q0], //Update Y_k
 						X_k.pData[X_Q1],
 						X_k.pData[X_Q2],

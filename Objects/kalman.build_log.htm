@@ -22,30 +22,18 @@ Dialog DLL:      TARMCM1.DLL V1.12.0.0
  
 <h2>Project:</h2>
 F:\Studia\Kraksat\Kalman\Kalman\kalman.uvprojx
-Project File Date:  03/22/2017
+Project File Date:  04/22/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'E:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Target 1'
 assembling startup_MKL25Z4.s...
-compiling system_MKL25Z4.c...
 compiling kalman.c...
-kalman.h(58): warning:  #9-D: nested comment is not allowed
-  /**
-kalman.h(447): warning:  #9-D: nested comment is not allowed
-  /**
-kalman.h(451): warning:  #1295-D: Deprecated declaration kallmanInit - give arg types
-  void kallmanInit();
-kalman.h(456): warning:  #1295-D: Deprecated declaration kalmanGetSensors - give arg types
-  void kalmanGetSensors();
-kalman.h(462): warning:  #1295-D: Deprecated declaration kalmanInitializeStateVec - give arg types
-  void kalmanInitializeStateVec();
-kalman.c: 5 warnings, 0 errors
+compiling main.c...
+compiling system_MKL25Z4.c...
 linking...
-.\Objects\kalman.axf: Error: L6218E: Undefined symbol main (referred from __rtentry2.o).
-Not enough information to list image symbols.
-Finished: 1 information, 0 warning and 1 error messages.
-".\Objects\kalman.axf" - 1 Error(s), 5 Warning(s).
+Program Size: Code=3072 RO-data=288 RW-data=4056 ZI-data=1568  
+".\Objects\kalman.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -73,14 +61,13 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.0.1
 
    * Component: ARM::CMSIS:DSP:1.5.1
-      Include file:  CMSIS\Include\arm_math.h
       Library file:  CMSIS\Lib\ARM\arm_cortexM0l_math.lib
+      Include file:  CMSIS\Include\arm_math.h
 
    * Component: Keil::Device:Startup:2.5.0
       Source file:   Device\Source\system_MKL25Z4.c
-      Source file:   Device\Source\ARM\startup_MKL25Z4.s
       Include file:  Device\Source\system_MKL25Z4.h
-Target not created.
+      Source file:   Device\Source\ARM\startup_MKL25Z4.s
 Build Time Elapsed:  00:00:01
 </pre>
 </body>
