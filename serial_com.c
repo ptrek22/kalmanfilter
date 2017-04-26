@@ -35,3 +35,11 @@ void recVec(data_t* p, int size)
 		p[i] = reshapeParts(buf);
 	}
 }
+
+void transmitMatrix(array_t* p)
+{
+	uart_putchar(UART1, (char)(p->numRows));
+	uart_putchar(UART1, (char)(p->numCols));
+	sendVec(p->pData,(p->numRows)*(p->numCols));
+	
+}

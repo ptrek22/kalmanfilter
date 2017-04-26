@@ -450,6 +450,18 @@ data_t	Temp_7_data[TEMP_7_ROWS*TEMP_7_COLS] =
  0, 0, 0, 0, 1, 0,
  0, 0, 0, 0, 0, 1};
 
+  //===============================================================/
+ /**
+*@breif Temporary matrix for storing results - Dim x Num of inputs
+**/
+array_t Temp_8;
+/**
+*@breif Temporary matrix data array
+**/
+data_t	Temp_8_data[TEMP_8_ROWS*TEMP_8_COLS] ={0};
+
+
+  //===============================================================/
 void jacobianHph1(data_t q0,
 									data_t q1,
 									data_t q2,
@@ -685,8 +697,13 @@ void kalmanInit(void)
 	array_init(&H_k, H_ROWS, H_COLS, H_k_data);							//Global jacobian of h
 	array_init(&H_k_t, H_COLS, H_ROWS, H_k_t_data);					//Global jacobian of h transpositnion
 	array_init(&P_k, P_ROWS, P_COLS, P_k_data);							//Global state pretiction covariance matrix
+	array_init(&P_ap_k, P_AP_ROWS, P_AP_COLS, P_ap_k_data);	//Global state pretiction covariance estimate apriori matrix
 	array_init(&Kg_k, KG_ROWS, KG_COLS, Kg_k_data);					//Global kalman gain
 	array_init(&S_k, S_ROWS, S_COLS, S_k_data);							//Scaling matrix
+	array_init(&V_k, V_ROWS, V_COLS, V_k_data);							//V matrix
+	array_init(&V_k_t, V_COLS, V_ROWS, V_k_t_data);					//V matrix transposition
+	array_init(&W_k, W_ROWS, W_COLS, W_k_data);							//W matrix
+	array_init(&W_k_t, W_COLS, W_ROWS, W_k_t_data);					//W matrix transposition
 	array_init(&Temp_1, TEMP_1_ROWS, TEMP_1_COLS, Temp_1_data);		  //Temp matrix 1
 	array_init(&Temp_2, TEMP_2_ROWS, TEMP_2_COLS, Temp_2_data);		  //Temp matrix 2
 	array_init(&Temp_3, TEMP_3_ROWS, TEMP_3_COLS, Temp_3_data);		  //Temp matrix 3
@@ -694,6 +711,7 @@ void kalmanInit(void)
 	array_init(&Temp_5, TEMP_5_ROWS, TEMP_5_COLS, Temp_5_data);		  //Temp matrix 5 [NOI*NOI]
 	array_init(&Temp_6, TEMP_6_ROWS, TEMP_6_COLS, Temp_6_data);		  //Temp matrix 6 [NOI*NOI]
 	array_init(&Temp_7, TEMP_7_ROWS, TEMP_7_COLS, Temp_7_data);		  //Temp matrix 7 [NOI*NOI]
+	array_init(&Temp_8, TEMP_8_ROWS, TEMP_8_COLS, Temp_8_data);		  //Temp matrix 7 [DIM*NOI]
 	
 	//Copy initial vaules to transposition matrices
 	array_transpose(&H_k, &H_k_t);													//Global jacobian of h transpositnion
@@ -802,8 +820,9 @@ void kalmanStep(void)
 	array_mult(&A_k, 		&P_k, 		&Temp_1); //  Temp_1 = (Ak * Pk)    	 [n*n]*[n*n] = [n*n] : Temp1
 	array_mult(&Temp_1, &A_k_t,	  &Temp_2); //  Temp_2 = (Temp_1*Ak') 	 [n*n]*[n*n] = [n*n] : Temp2 - first part of the sum
 	array_mult(&W_k, 		&Qph1_k,	&Temp_1); //	Temp_1 = (Wk * Qph1) 		 [n*n]*[n*n] = [n*n] : Temp1
-	array_mult(&Temp_1, &Qph1_k,	&Temp_3); //	Temp_3 = (Temp_1*Qph1')  [n*n]*[n*n] = [n*n] : Temp3 - second part of the sum
-	array_add(&Temp_1, &Temp_2,   &P_ap_k); //  P_ap_k = Temp_1 + Temp_3 [n*n] + [n*n]			 : P_ap_k
+	array_mult(&Temp_1, &W_k_t,	&Temp_3); //	Temp_3 = (Temp_1*Wk')  [n*n]*[n*n] = [n*n] : Temp3 - second part of the sum
+	array_add(&Temp_2, &Temp_3,   &P_ap_k); //  P_ap_k = Temp_1 + Temp_3 [n*n] + [n*n]			 : P_ap_k
+	//Checked, ok
 	
 	//Get H jacobian ----------------------------------------------------
 	jacobianHph1(X_k.pData[X_Q0],
@@ -821,7 +840,7 @@ void kalmanStep(void)
 	array_mult(&Temp_4, &H_k_t,			&Temp_5);  //  Temp_5 = (Temp_4* H_k)[m*n]*[n*m] = [m*m] : Temp5 -  first part of the sum
 	array_mult(&V_k, 		&Rph1_k, 		&Temp_6);  //  Temp_6 = (Vk * Rph1_k)[m*n]*[n*n] = [m*m] : Temp6
 	array_mult(&Temp_6, &V_k_t, 		&Temp_7);  //  Temp_7 = (Temp_5 * Vk')[m*n]*[n*n] = [m*m]: Temp7 -  second part of the sum
-	 array_add(&Temp_5, &Temp_7, 		&Temp_6);  //  Temp_6 = Temp_5 + Temp_7 [m*m]+[m*m] = [m*m]
+	array_add(&Temp_5, &Temp_7, 		&Temp_6);  //  Temp_6 = Temp_5 + Temp_7 [m*m]+[m*m] = [m*m]
 	
 	// K2 = S*K1*S 
 	array_mult(&S_k, 		&Temp_6, 		&Temp_5);  //  Temp_5 = S*Temp_6 [m*m]*[m*m] = [m*m]
@@ -833,8 +852,8 @@ void kalmanStep(void)
 	array_mult(&Temp_6, &S_k, 			&Temp_5);  //	 Temp_5 = Temp_6*S [m*m]*[m*m] = [m*m]
 	
 	// Kg_k = Pkm * (Hk') * K3
-	array_mult(&P_ap_k, &H_k_t, 		&Temp_6);  //  Temp_6 = P_ap_k*H_k'  [n*n]*[n*m] = [n*m]
-	array_mult(&Temp_6, &Temp_5, 		&Kg_k);    //	 Kg_k = Temp_6*Temp_5[n*m]*[m*m] = [n*m]
+	array_mult(&P_ap_k, &H_k_t, 		&Temp_8);  //  Temp_8 = P_ap_k*H_k'  [n*n]*[n*m] = [n*m]
+	array_mult(&Temp_8, &Temp_5, 		&Kg_k);    //	 Kg_k = Temp_8*Temp_5[n*m]*[m*m] = [n*m]
 
 	
 	//Update state vector---------------------------------------------

@@ -15,3 +15,4 @@ void sendInParts(data_t toConvert);
 data_t reshapeParts(char* toConvert);
 void sendVec(data_t* p, int size);
 void recVec(data_t* p, int size);
+void transmitMatrix(array_t* p);

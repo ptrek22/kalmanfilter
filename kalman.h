@@ -463,6 +463,19 @@ extern array_t Temp_7;
 **/
 extern data_t	Temp_7_data[TEMP_7_ROWS*TEMP_7_COLS];
 
+ //===============================================================/
+ /**
+*@breif Temporary matrix for storing results - Num of inputs x Num of inputs
+**/
+#define TEMP_8_ROWS _DIM_
+#define TEMP_8_COLS _NOI_
+
+extern array_t Temp_8;
+/**
+*@breif Temporary matrix data array
+**/
+extern data_t	Temp_8_data[TEMP_8_ROWS*TEMP_8_COLS];
+
 /******************************************************************
 ***************KALMAN FILTER SPECIFIC FUNCTIONS********************
 *******************************************************************

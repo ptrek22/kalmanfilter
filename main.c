@@ -21,10 +21,20 @@ int main()
 
 	recVec(Z_k.pData,_NOI_);
 	recVec(X_k.pData,_DIM_);
+	
 	while(1)
 	{
 		kalmanStep();
-		sendVec(Temp_6.pData,_DIM_);
+		transmitMatrix(&X_k);
 	}
+//	transmitMatrix(&A_k);
+//	transmitMatrix(&P_k);
+//	transmitMatrix(&W_k);
+//	transmitMatrix(&Qph1_k);
+//	transmitMatrix(&P_ap_k);
+//	transmitMatrix(&Temp_8);
+//	transmitMatrix(&Temp_5);
+//	transmitMatrix(&Kg_k);
+	
 
 }
