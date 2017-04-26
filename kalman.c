@@ -19,11 +19,11 @@
 /**
 *@breif Moment of inertia  on Yaxis 
 */
- data_t I2 = 0.1f;
+ data_t I2 = 0.2f;
 /**
 *@breif Moment of inertia  on Zaxis 
 */
- data_t I3 = 0.1f;						
+ data_t I3 = 0.3f;						
 
 
 
@@ -711,12 +711,12 @@ void kalmanInit(void)
 
 void kalmanGetSensors(void)
 {
-	Z_k.pData[Z_B1] = 0;   //B1
-	Z_k.pData[Z_B2] = 0;   //B2
-	Z_k.pData[Z_B3] = 0;   //B3
-	Z_k.pData[Z_W1] = 0;   //w1
-	Z_k.pData[Z_W2] = 0;   //w2
-	Z_k.pData[Z_W3] = 0;   //w3
+	//Z_k.pData[Z_B1] = 0;   //B1
+	//Z_k.pData[Z_B2] = 0;   //B2
+	//Z_k.pData[Z_B3] = 0;   //B3
+	//Z_k.pData[Z_W1] = 0;   //w1
+	//Z_k.pData[Z_W2] = 0;   //w2
+	//Z_k.pData[Z_W3] = 0;   //w3
 }
 
 
@@ -805,7 +805,6 @@ void kalmanStep(void)
 	array_mult(&Temp_1, &Qph1_k,	&Temp_3); //	Temp_3 = (Temp_1*Qph1')  [n*n]*[n*n] = [n*n] : Temp3 - second part of the sum
 	array_add(&Temp_1, &Temp_2,   &P_ap_k); //  P_ap_k = Temp_1 + Temp_3 [n*n] + [n*n]			 : P_ap_k
 	
-	
 	//Get H jacobian ----------------------------------------------------
 	jacobianHph1(X_k.pData[X_Q0],
 							 X_k.pData[X_Q1],
@@ -816,8 +815,6 @@ void kalmanStep(void)
 							 X_k.pData[X_W3],
 							 X_k.pData[X_B]);
 	
-
-
 	//Computing Kalman gain----------------------------------------------
 	//(Hk * Pkm * (Hk') + Vk * Rph1 * (Vk')) = K1
 	array_mult(&H_k, 		&P_ap_k, 		&Temp_4);  //  Temp_4 = (Hk * P_ap_k)[m*n]*[n*n] = [m*n] : Temp4 
@@ -838,11 +835,10 @@ void kalmanStep(void)
 	// Kg_k = Pkm * (Hk') * K3
 	array_mult(&P_ap_k, &H_k_t, 		&Temp_6);  //  Temp_6 = P_ap_k*H_k'  [n*n]*[n*m] = [n*m]
 	array_mult(&Temp_6, &Temp_5, 		&Kg_k);    //	 Kg_k = Temp_6*Temp_5[n*m]*[m*m] = [n*m]
-	
-	
+
 	
 	//Update state vector---------------------------------------------
-	//xk = xkm + Kk * (zk - h(q0k, q1k, q2k, q3k, w1k, w2k, w3k, Bk));
+	//xk = xkm + Kg_ * (zk - h(q0k, q1k, q2k, q3k, w1k, w2k, w3k, Bk));
 	//                 ______________________________________________ - innovation - Y_k vecotr
 	kalmanGetSensors();				 //Update Z_k
 	kalmanInv(X_k.pData[X_Q0], //Update Y_k
@@ -866,11 +862,10 @@ void kalmanStep(void)
 	
 	array_add(&X_t1_k,  &X_t2_k, 		&X_k); 		// X_k = X_t1_k + X_t2_k [n*1] + [n*1] = [n*1]
 	
-	
 
 	//Update covariance matrix-------------------------------------- 
 	//Pk = Pkm- Kk*Hk* Pkm;
 	array_mult(&Kg_k, 		&H_k, 		&Temp_1);  //  Temp_1 = (Kg_k*H_k)			[n*m]*[m*n] = [n*n]
 	array_mult(&Temp_1, 	&P_ap_k, 	&Temp_2);  //  Temp_2 = (Temp_1*P_ap_k) [n*n]*[n*n] = [n*n]
-	array_sub( &P_ap_k, 	&Temp_2,	&P_k);		 //	 Pk = P_ap_k - Temp_2 		[n*m]-[n*n] = [n*n]
+	array_sub( &P_ap_k, 	&Temp_2,	&P_k);		 //	 Pk = P_ap_k - Temp_2 		[n*n]-[n*n] = [n*n]
 }

@@ -17,23 +17,33 @@ Library Manager: ArmAr.exe V5.06 update 4 (build 422)
 Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
 CPU DLL:         SARMCM3.DLL V5.23
 Dialog DLL:      DARMCM1.DLL V1.17.0.0
-Target DLL:      UL2CM3.DLL V1.159.7.0
+Target DLL:      CMSIS_AGDI.dll V1.27.5.0
 Dialog DLL:      TARMCM1.DLL V1.12.0.0
  
 <h2>Project:</h2>
 F:\Studia\Kraksat\Kalman\Kalman\kalman.uvprojx
-Project File Date:  04/22/2017
+Project File Date:  04/25/2017
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 4 (build 422)', folder: 'E:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Target 1'
-assembling startup_MKL25Z4.s...
 compiling kalman.c...
+compiling uart.c...
 compiling main.c...
+serial_com.h(17): warning:  #1-D: last line of file ends without a newline
+  void recVec(data_t* p, int size);
+main.c: 1 warning, 0 errors
+assembling startup_MKL25Z4.s...
+compiling serial_com.c...
+serial_com.h(17): warning:  #1-D: last line of file ends without a newline
+  void recVec(data_t* p, int size);
+serial_com.c(37): warning:  #1-D: last line of file ends without a newline
+  }
+serial_com.c: 2 warnings, 0 errors
 compiling system_MKL25Z4.c...
 linking...
-Program Size: Code=3072 RO-data=288 RW-data=4056 ZI-data=1568  
-".\Objects\kalman.axf" - 0 Error(s), 0 Warning(s).
+Program Size: Code=8108 RO-data=288 RW-data=4060 ZI-data=1572  
+".\Objects\kalman.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -61,13 +71,13 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.0.1
 
    * Component: ARM::CMSIS:DSP:1.5.1
-      Library file:  CMSIS\Lib\ARM\arm_cortexM0l_math.lib
       Include file:  CMSIS\Include\arm_math.h
+      Library file:  CMSIS\Lib\ARM\arm_cortexM0l_math.lib
 
    * Component: Keil::Device:Startup:2.5.0
       Source file:   Device\Source\system_MKL25Z4.c
-      Include file:  Device\Source\system_MKL25Z4.h
       Source file:   Device\Source\ARM\startup_MKL25Z4.s
+      Include file:  Device\Source\system_MKL25Z4.h
 Build Time Elapsed:  00:00:01
 </pre>
 </body>
