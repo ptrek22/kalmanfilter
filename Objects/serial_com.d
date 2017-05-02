@@ -8,7 +8,6 @@
 .\objects\serial_com.o: E:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\cmsis_armcc.h
 .\objects\serial_com.o: .\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h
 .\objects\serial_com.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\serial_com.o: kalman.h
 .\objects\serial_com.o: E:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\arm_math.h
 .\objects\serial_com.o: E:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include\core_cm0plus.h
 .\objects\serial_com.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

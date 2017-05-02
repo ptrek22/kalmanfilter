@@ -15,15 +15,15 @@
 /**
 *@breif Moment of inertia  on Xaxis 
 */
- data_t I1 = 0.1f;
+ data_t I1 = 0.00001f;
 /**
 *@breif Moment of inertia  on Yaxis 
 */
- data_t I2 = 0.2f;
+ data_t I2 = 0.00002f;
 /**
 *@breif Moment of inertia  on Zaxis 
 */
- data_t I3 = 0.3f;						
+ data_t I3 = 0.00003f;						
 
 
 
@@ -121,12 +121,12 @@ array_t Rph1_k;
 *@breif SMeasurement noise covariance matrix phase 1 data array
 **/ 
 data_t	Rph1_k_data[RPH1_COLS*RPH1_ROWS] =
-{3.844e-13,				  0, 				 0, 			 0, 			 0, 
- 0, 		 3.844e-13, 0,				 0, 			 0, 			 0, 
- 0, 		 0,         3.844e-13, 0, 			 0,     	 0, 
- 0, 		 0, 				0, 				 1.369e-5, 0, 			 0, 
- 0, 		 0, 				0, 				 0,        1.369e-5, 0, 
- 0, 		 0, 				0, 				 0, 			 0, 			 1.369e-5};
+{3.844e-13,		0,				  0, 				 0, 			 0, 			 0,		
+ 0, 			 		3.844e-13, 0,				 0, 			 0, 			 0, 
+ 0, 					0,         3.844e-13, 0, 			 0,     	 0, 
+ 0, 					0, 				0, 				 1.369e-5, 0, 			 0, 
+ 0, 					0, 				0, 				 0,        1.369e-5, 0, 
+ 0, 		 			0, 				0, 				 0, 			 0, 			 1.369e-5};
 
  
 //===============================================================/
@@ -201,12 +201,12 @@ array_t H_k;
 */
 
 data_t	H_k_data[H_ROWS*H_COLS] =
-{0, 0, 0, 0, 0, 0, 0, 0,
+{1, 1, 1, 0, 0, 0, 0, 0,
  0, 0, 0, 0, 0, 0, 0, 0,
  0, 0, 0, 0, 0, 0, 0, 0,
- 0, 0, 0, 0, 0, 1, 0, 0,
- 0, 0, 0, 0, 0, 0, 1, 0,
- 0, 0, 0, 0, 0, 0, 0, 1};
+ 0, 0, 0, 0, 0, 0, 0, 0,
+ 0, 0, 0, 0, 0, 0, 0, 0,
+ 0, 0, 0, 0, 0, 0, 0, 0};
 
 //---------------------------------------------------------------/
  
@@ -508,8 +508,8 @@ void jacobianHph1(data_t q0,
 //	H_k.pData[Z_W1*H_COLS + X_Q1] =  0;
 //	H_k.pData[Z_W1*H_COLS + X_Q2] =  0;
 //	H_k.pData[Z_W1*H_COLS + X_Q3] =  0;
-//	H_k.pData[Z_W1*H_COLS + X_W1] =  0;
-//	H_k.pData[Z_W1*H_COLS + X_W2] =  1;
+//	H_k.pData[Z_W1*H_COLS + X_W1] =  1;
+//	H_k.pData[Z_W1*H_COLS + X_W2] =  0;
 //	H_k.pData[Z_W1*H_COLS + X_W3] =  0;
 //	H_k.pData[Z_W1*H_COLS + X_B]  =  0;
 	
@@ -519,8 +519,8 @@ void jacobianHph1(data_t q0,
 //	H_k.pData[Z_W2*H_COLS + X_Q2] =  0;
 //	H_k.pData[Z_W2*H_COLS + X_Q3] =  0;
 //	H_k.pData[Z_W2*H_COLS + X_W1] =  0;
-//	H_k.pData[Z_W2*H_COLS + X_W2] =  0;
-//	H_k.pData[Z_W2*H_COLS + X_W3] =  1;
+//	H_k.pData[Z_W2*H_COLS + X_W2] =  1;
+//	H_k.pData[Z_W2*H_COLS + X_W3] =  0;
 //	H_k.pData[Z_W2*H_COLS + X_B]  =  0;
 	
 	//Row 6 d Omega3 
@@ -530,8 +530,8 @@ void jacobianHph1(data_t q0,
 //	H_k.pData[Z_W3*H_COLS + X_Q3] =  0;
 //	H_k.pData[Z_W3*H_COLS + X_W1] =  0;
 //	H_k.pData[Z_W3*H_COLS + X_W2] =  0;
-//	H_k.pData[Z_W3*H_COLS + X_W3] =  0;
-//	H_k.pData[Z_W3*H_COLS + X_B]  =  1;
+//	H_k.pData[Z_W3*H_COLS + X_W3] =  1;
+//	H_k.pData[Z_W3*H_COLS + X_B]  =  0;
 
 
 //Compute transpose
@@ -620,7 +620,7 @@ void jacobianAph1(data_t q0,
 //	A_k.pData[X_W3*A_COLS + X_W3] =  1;
 //	A_k.pData[X_W3*A_COLS + X_B]  =  0;
 	
-	//Row 7 0
+	//Row 8 0
 //	A_k.pData[X_B*A_COLS + X_Q0] =  0;
 //	A_k.pData[X_B*A_COLS + X_Q1] =  0;
 //	A_k.pData[X_B*A_COLS + X_Q2] =  0;
@@ -671,7 +671,7 @@ void kalmanInv	 (data_t q0,
 {
 	Y_k.pData[Z_B1] = Z_k.pData[Z_B1] - B*(q1*q3-q0*q2);
 	Y_k.pData[Z_B2] = Z_k.pData[Z_B2] - B*(q2*q3+q0*q1);
-	Y_k.pData[Z_B3] = Z_k.pData[Z_B3] - (q2*q2 + q3*q3)/2;
+	Y_k.pData[Z_B3] = Z_k.pData[Z_B3] - B * (q0*q0 - q1*q1 - q2*q2+ q3*q3)/2;
 	Y_k.pData[Z_W1] = Z_k.pData[Z_W1] - w1;
 	Y_k.pData[Z_W2] = Z_k.pData[Z_W2] - w2;
 	Y_k.pData[Z_W3] = Z_k.pData[Z_W3] - w3;
@@ -729,6 +729,9 @@ void kalmanInit(void)
 
 void kalmanGetSensors(void)
 {
+	
+	recVec(Z_k.pData,_NOI_);	
+	
 	//Z_k.pData[Z_B1] = 0;   //B1
 	//Z_k.pData[Z_B2] = 0;   //B2
 	//Z_k.pData[Z_B3] = 0;   //B3
@@ -746,7 +749,6 @@ void kalmanInitializeStateVec(void)
 	
 	//Request data from sensors 
 	kalmanGetSensors();
-	
 	//X_B - is used in further calculations
 	//q0k = sqrt((B3 +Bk)/(2*Bk));
 	sqrtf(Z_k.pData[Z_B1]*Z_k.pData[Z_B1] +
@@ -791,7 +793,7 @@ void kalmanInitializeStateVec(void)
 
 //*********************************************************************
 void kalmanStep(void)
-{
+{	
 	//Get state vector apriori estimate ---------------------------------
 	kalmanF(X_k.pData[X_Q0],
 					X_k.pData[X_Q1],
@@ -815,6 +817,8 @@ void kalmanStep(void)
 							 X_k.pData[X_W3],
 							 X_k.pData[X_B]);
 							 
+	transmitMatrix(&A_k);
+						 
 	//Get P estimate apriori --------------------------------------------
 	//Pkm = Ak * Pk * (Ak') + Wk * Qph1 * Wk'
 	array_mult(&A_k, 		&P_k, 		&Temp_1); //  Temp_1 = (Ak * Pk)    	 [n*n]*[n*n] = [n*n] : Temp1
@@ -822,31 +826,36 @@ void kalmanStep(void)
 	array_mult(&W_k, 		&Qph1_k,	&Temp_1); //	Temp_1 = (Wk * Qph1) 		 [n*n]*[n*n] = [n*n] : Temp1
 	array_mult(&Temp_1, &W_k_t,	&Temp_3); //	Temp_3 = (Temp_1*Wk')  [n*n]*[n*n] = [n*n] : Temp3 - second part of the sum
 	array_add(&Temp_2, &Temp_3,   &P_ap_k); //  P_ap_k = Temp_1 + Temp_3 [n*n] + [n*n]			 : P_ap_k
+
+
 	//Checked, ok
-	
-	//Get H jacobian ----------------------------------------------------
-	jacobianHph1(X_k.pData[X_Q0],
-							 X_k.pData[X_Q1],
-							 X_k.pData[X_Q2],
-							 X_k.pData[X_Q3],
-							 X_k.pData[X_W1],
-							 X_k.pData[X_W2],
-							 X_k.pData[X_W3],
-							 X_k.pData[X_B]);
+
+//Get H jacobian ----------------------------------------------------
+	jacobianHph1(X_ap_k.pData[X_Q0],
+							 X_ap_k.pData[X_Q1],
+							 X_ap_k.pData[X_Q2],
+							 X_ap_k.pData[X_Q3],
+							 X_ap_k.pData[X_W1],
+							 X_ap_k.pData[X_W2],
+							 X_ap_k.pData[X_W3],
+							 X_ap_k.pData[X_B]);
 	
 	//Computing Kalman gain----------------------------------------------
 	//(Hk * Pkm * (Hk') + Vk * Rph1 * (Vk')) = K1
 	array_mult(&H_k, 		&P_ap_k, 		&Temp_4);  //  Temp_4 = (Hk * P_ap_k)[m*n]*[n*n] = [m*n] : Temp4 
-	array_mult(&Temp_4, &H_k_t,			&Temp_5);  //  Temp_5 = (Temp_4* H_k)[m*n]*[n*m] = [m*m] : Temp5 -  first part of the sum
-	array_mult(&V_k, 		&Rph1_k, 		&Temp_6);  //  Temp_6 = (Vk * Rph1_k)[m*n]*[n*n] = [m*m] : Temp6
+	array_mult(&Temp_4, &H_k_t,			&Temp_5);  //  Temp_5 = (Temp_4* H_k)[m*n]*[n*m] = [m*m] : Temp5 -  first part of the sum;
+	array_mult(&V_k, 		&Rph1_k, 		&Temp_6);  //  Temp_6 = (Vk * Rph1_k)[m*m]*[m*m] = [m*m] : Temp6
 	array_mult(&Temp_6, &V_k_t, 		&Temp_7);  //  Temp_7 = (Temp_5 * Vk')[m*n]*[n*n] = [m*m]: Temp7 -  second part of the sum
 	array_add(&Temp_5, &Temp_7, 		&Temp_6);  //  Temp_6 = Temp_5 + Temp_7 [m*m]+[m*m] = [m*m]
 	
+	
+	
 	// K2 = S*K1*S 
 	array_mult(&S_k, 		&Temp_6, 		&Temp_5);  //  Temp_5 = S*Temp_6 [m*m]*[m*m] = [m*m]
-	array_mult(&Temp_5, &S_k, 			&Temp_6);  //	 Temp_6 = Temp_5*S [m*m]*[m*m] = [m*m]
-	
+ 	array_mult(&Temp_5, &S_k, 			&Temp_6);  //	 Temp_6 = Temp_5*S [m*m]*[m*m] = [m*m]
+
 	// K3 = S*inv(K2)*S 
+	//!!!!!!!!!!!!!
 	array_inv(&Temp_6, &Temp_5);							 //	 Temp_5 = Temp_6^-1
 	array_mult(&S_k, 		&Temp_5, 		&Temp_6);  //  Temp_6 = S*Temp_5 [m*m]*[m*m] = [m*m]
 	array_mult(&Temp_6, &S_k, 			&Temp_5);  //	 Temp_5 = Temp_6*S [m*m]*[m*m] = [m*m]
@@ -854,8 +863,7 @@ void kalmanStep(void)
 	// Kg_k = Pkm * (Hk') * K3
 	array_mult(&P_ap_k, &H_k_t, 		&Temp_8);  //  Temp_8 = P_ap_k*H_k'  [n*n]*[n*m] = [n*m]
 	array_mult(&Temp_8, &Temp_5, 		&Kg_k);    //	 Kg_k = Temp_8*Temp_5[n*m]*[m*m] = [n*m]
-
-	
+		
 	//Update state vector---------------------------------------------
 	//xk = xkm + Kg_ * (zk - h(q0k, q1k, q2k, q3k, w1k, w2k, w3k, Bk));
 	//                 ______________________________________________ - innovation - Y_k vecotr
@@ -880,11 +888,14 @@ void kalmanStep(void)
 	X_t2_k.pData[X_T2_B] = X_k.pData[X_B];
 	
 	array_add(&X_t1_k,  &X_t2_k, 		&X_k); 		// X_k = X_t1_k + X_t2_k [n*1] + [n*1] = [n*1]
-	
+
 
 	//Update covariance matrix-------------------------------------- 
 	//Pk = Pkm- Kk*Hk* Pkm;
 	array_mult(&Kg_k, 		&H_k, 		&Temp_1);  //  Temp_1 = (Kg_k*H_k)			[n*m]*[m*n] = [n*n]
 	array_mult(&Temp_1, 	&P_ap_k, 	&Temp_2);  //  Temp_2 = (Temp_1*P_ap_k) [n*n]*[n*n] = [n*n]
 	array_sub( &P_ap_k, 	&Temp_2,	&P_k);		 //	 Pk = P_ap_k - Temp_2 		[n*n]-[n*n] = [n*n]
+
+	
+
 }

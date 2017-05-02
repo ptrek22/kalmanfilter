@@ -4,13 +4,13 @@
 #define ARM_MATH_CM0PLUS
 #include "arm_math.h"                   // ARM::CMSIS:DSP
 
+#include "serial_com.h"
 
 #define _DIM_	8  											// System dimension 
 #define _NOI_	6												// Number of inputs
 
 typedef float32_t data_t;
 typedef arm_matrix_instance_f32  array_t ;
-
 
 //Data type specific macros
 #define array_init(a,b,c,d) 	(arm_mat_init_f32(a,b,c,d))

@@ -1,11 +1,14 @@
 flushinput(B);
-dataY = [1 2 3 4 5 6.5];
-dataX = 0.1*[1 2 3 4 5 6 7 8];
+dataY = [2 0 0 1 0 0];
+
 fwrite(B, dataY, 'float32');
-fwrite(B, dataX, 'float32');
+pause(1);
 while(1)
-    recieveMatrixBt(B)
+    waitforbuttonpress;
+    fwrite(B, dataY, 'float32');
+    A =  recieveMatrixBt(B)
 end
+
 % ak = recieveMatrixBt(B);
 % pk = recieveMatrixBt(B);
 % wk = recieveMatrixBt(B);

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\kalman.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\kalman.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Wed Apr 26 22:18:35 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Tue May 02 14:14:21 2017
 <BR><P>
 <H3>Maximum Stack Usage =        188 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -346,11 +346,11 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
 </UL>
 
-<P><STRONG><a name="[59]"></a>arm_mat_init_f32</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, arm_mat_init_f32.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInit
+<P><STRONG><a name="[5b]"></a>arm_mat_init_f32</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, arm_mat_init_f32.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInit
 </UL>
 
 <P><STRONG><a name="[41]"></a>arm_mat_mult_f32</STRONG> (Thumb, 260 bytes, Stack size 112 bytes, arm_mat_mult_f32.o(.text))
@@ -359,7 +359,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
 </UL>
 
 <P><STRONG><a name="[43]"></a>arm_mat_sub_f32</STRONG> (Thumb, 144 bytes, Stack size 24 bytes, arm_mat_sub_f32.o(.text))
@@ -367,7 +367,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
 </UL>
 
 <P><STRONG><a name="[94]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
@@ -385,7 +385,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrtf
+<BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrtf
 </UL>
 
 <P><STRONG><a name="[46]"></a>__aeabi_errno_addr</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, rt_errno_addr_intlibspace.o(.text))
@@ -415,12 +415,7 @@ Global Symbols
 
 <P><STRONG><a name="[9c]"></a>__use_no_semihosting_swi</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[9d]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, indicate_semi.o(.text), UNUSED)
-
-<P><STRONG><a name="[5b]"></a>kalmanGetSensors</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, kalman.o(i.kalmanGetSensors))
-<BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
-</UL>
+<P><STRONG><a name="[9d]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
 
 <P><STRONG><a name="[4a]"></a>arm_mat_inverse_f32</STRONG> (Thumb, 884 bytes, Stack size 128 bytes, arm_mat_inverse_f32.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 148<LI>Call Chain = arm_mat_inverse_f32 &rArr; __aeabi_fdiv
@@ -429,13 +424,13 @@ Global Symbols
 <LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_frsub
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
 </UL>
 
 <P><STRONG><a name="[55]"></a>arm_mat_trans_f32</STRONG> (Thumb, 132 bytes, Stack size 28 bytes, arm_mat_trans_f32.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = arm_mat_trans_f32
 </UL>
-<BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInit
+<BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInit
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;jacobianHph1
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;jacobianAph1
 </UL>
@@ -456,8 +451,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = __aeabi_fdiv
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_inverse_f32
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanF
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;jacobianAph1
 </UL>
@@ -480,7 +475,7 @@ Global Symbols
 <P><STRONG><a name="[68]"></a>_fsqrt</STRONG> (Thumb, 140 bytes, Stack size 12 bytes, fsqrt.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = _fsqrt
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrtf
+<BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrtf
 </UL>
 
 <P><STRONG><a name="[50]"></a>__fpl_cmpreturn</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, cmpret.o(.text), UNUSED)
@@ -533,7 +528,7 @@ Global Symbols
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_trans_f32
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
 </UL>
 
 <P><STRONG><a name="[56]"></a>jacobianHph1</STRONG> (Thumb, 464 bytes, Stack size 48 bytes, kalman.o(i.jacobianHph1))
@@ -544,7 +539,7 @@ Global Symbols
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_trans_f32
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
 </UL>
 
 <P><STRONG><a name="[57]"></a>kalmanF</STRONG> (Thumb, 566 bytes, Stack size 64 bytes, kalman.o(i.kalmanF))
@@ -555,34 +550,43 @@ Global Symbols
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
 </UL>
 
-<P><STRONG><a name="[58]"></a>kalmanInit</STRONG> (Thumb, 400 bytes, Stack size 8 bytes, kalman.o(i.kalmanInit))
-<BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = kalmanInit &rArr; kalmanInitializeStateVec &rArr; sqrtf &rArr; _fsqrt
+<P><STRONG><a name="[58]"></a>kalmanGetSensors</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, kalman.o(i.kalmanGetSensors))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = kalmanGetSensors &rArr; recVec
+</UL>
+<BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recVec
+</UL>
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
+</UL>
+
+<P><STRONG><a name="[5a]"></a>kalmanInit</STRONG> (Thumb, 400 bytes, Stack size 8 bytes, kalman.o(i.kalmanInit))
+<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = kalmanInit &rArr; kalmanInitializeStateVec &rArr; kalmanGetSensors &rArr; recVec
 </UL>
 <BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_trans_f32
-<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_init_f32
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_init_f32
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
 </UL>
 <BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[5a]"></a>kalmanInitializeStateVec</STRONG> (Thumb, 466 bytes, Stack size 32 bytes, kalman.o(i.kalmanInitializeStateVec))
-<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = kalmanInitializeStateVec &rArr; sqrtf &rArr; _fsqrt
+<P><STRONG><a name="[5c]"></a>kalmanInitializeStateVec</STRONG> (Thumb, 466 bytes, Stack size 32 bytes, kalman.o(i.kalmanInitializeStateVec))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = kalmanInitializeStateVec &rArr; kalmanGetSensors &rArr; recVec
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrtf
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple
+<BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sqrtf
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cfrcmple
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
-<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanGetSensors
+<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanGetSensors
 </UL>
-<BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInit
+<BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInit
 </UL>
 
-<P><STRONG><a name="[5e]"></a>kalmanInv</STRONG> (Thumb, 232 bytes, Stack size 48 bytes, kalman.o(i.kalmanInv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = kalmanInv &rArr; __aeabi_fdiv
+<P><STRONG><a name="[5f]"></a>kalmanInv</STRONG> (Thumb, 278 bytes, Stack size 56 bytes, kalman.o(i.kalmanInv))
+<BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = kalmanInv &rArr; __aeabi_fdiv
 </UL>
 <BR>[Calls]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
@@ -590,18 +594,19 @@ Global Symbols
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_frsub
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
 </UL>
 
-<P><STRONG><a name="[5f]"></a>kalmanStep</STRONG> (Thumb, 574 bytes, Stack size 40 bytes, kalman.o(i.kalmanStep))
+<P><STRONG><a name="[60]"></a>kalmanStep</STRONG> (Thumb, 580 bytes, Stack size 40 bytes, kalman.o(i.kalmanStep))
 <BR><BR>[Stack]<UL><LI>Max Depth = 188<LI>Call Chain = kalmanStep &rArr; arm_mat_inverse_f32 &rArr; __aeabi_fdiv
 </UL>
-<BR>[Calls]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_sub_f32
+<BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;transmitMatrix
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_sub_f32
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_mult_f32
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_inverse_f32
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_add_f32
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
-<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanGetSensors
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
+<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanGetSensors
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanF
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;jacobianHph1
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;jacobianAph1
@@ -609,29 +614,27 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[39]"></a>main</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, main.o(i.main))
+<P><STRONG><a name="[39]"></a>main</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 188<LI>Call Chain = main &rArr; kalmanStep &rArr; arm_mat_inverse_f32 &rArr; __aeabi_fdiv
 </UL>
-<BR>[Calls]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;transmitMatrix
-<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recVec
-<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_gpio_init
-<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
-<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInit
+<BR>[Calls]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_gpio_init
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
+<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
 
-<P><STRONG><a name="[61]"></a>recVec</STRONG> (Thumb, 48 bytes, Stack size 24 bytes, serial_com.o(i.recVec))
+<P><STRONG><a name="[59]"></a>recVec</STRONG> (Thumb, 48 bytes, Stack size 24 bytes, serial_com.o(i.recVec))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = recVec
 </UL>
 <BR>[Calls]<UL><LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reshapeParts
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_getchar
 </UL>
-<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanGetSensors
 </UL>
 
 <P><STRONG><a name="[64]"></a>reshapeParts</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, serial_com.o(i.reshapeParts))
-<BR><BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recVec
+<BR><BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recVec
 </UL>
 
 <P><STRONG><a name="[65]"></a>sendInParts</STRONG> (Thumb, 30 bytes, Stack size 16 bytes, serial_com.o(i.sendInParts))
@@ -647,32 +650,32 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendInParts
 </UL>
-<BR>[Called By]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;transmitMatrix
+<BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;transmitMatrix
 </UL>
 
-<P><STRONG><a name="[5d]"></a>sqrtf</STRONG> (Thumb, 44 bytes, Stack size 16 bytes, sqrtf.o(i.sqrtf))
+<P><STRONG><a name="[5e]"></a>sqrtf</STRONG> (Thumb, 44 bytes, Stack size 16 bytes, sqrtf.o(i.sqrtf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = sqrtf &rArr; _fsqrt
 </UL>
 <BR>[Calls]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fsqrt
 <LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
+<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
 </UL>
 
-<P><STRONG><a name="[62]"></a>transmitMatrix</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, serial_com.o(i.transmitMatrix))
+<P><STRONG><a name="[61]"></a>transmitMatrix</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, serial_com.o(i.transmitMatrix))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = transmitMatrix &rArr; sendVec &rArr; sendInParts
 </UL>
 <BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendVec
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_putchar
 </UL>
-<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanStep
 </UL>
 
 <P><STRONG><a name="[63]"></a>uart_getchar</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, uart.o(i.uart_getchar))
-<BR><BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recVec
+<BR><BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;recVec
 </UL>
 
-<P><STRONG><a name="[60]"></a>uart_gpio_init</STRONG> (Thumb, 60 bytes, Stack size 8 bytes, main.o(i.uart_gpio_init))
+<P><STRONG><a name="[62]"></a>uart_gpio_init</STRONG> (Thumb, 60 bytes, Stack size 8 bytes, main.o(i.uart_gpio_init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = uart_gpio_init &rArr; uart_init &rArr; __aeabi_idivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
@@ -685,12 +688,12 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
 </UL>
-<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_gpio_init
+<BR>[Called By]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_gpio_init
 </UL>
 
 <P><STRONG><a name="[66]"></a>uart_putchar</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, uart.o(i.uart_putchar))
 <BR><BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendInParts
-<LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;transmitMatrix
+<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;transmitMatrix
 </UL>
 
 <P><STRONG><a name="[40]"></a>__aeabi_fadd</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, faddsub.o(x$fpl$fadd))
@@ -698,8 +701,8 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_mult_f32
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_add_f32
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanF
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;jacobianHph1
 </UL>
@@ -713,8 +716,8 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_mult_f32
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_inverse_f32
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanF
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;jacobianHph1
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;jacobianAph1
@@ -722,10 +725,10 @@ Global Symbols
 
 <P><STRONG><a name="[a3]"></a>_fmul</STRONG> (Thumb, 172 bytes, Stack size 16 bytes, fmul.o(x$fpl$fmul), UNUSED)
 
-<P><STRONG><a name="[5c]"></a>__aeabi_cfrcmple</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, frlef.o(x$fpl$frleqf))
+<P><STRONG><a name="[5d]"></a>__aeabi_cfrcmple</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, frlef.o(x$fpl$frleqf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_cfrcmple
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
+<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInitializeStateVec
 </UL>
 
 <P><STRONG><a name="[6d]"></a>_frcmple</STRONG> (Thumb, 84 bytes, Stack size 8 bytes, frlef.o(x$fpl$frleqf), UNUSED)
@@ -736,7 +739,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_frsub
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_inverse_f32
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
 </UL>
 
 <P><STRONG><a name="[6e]"></a>_frsb</STRONG> (Thumb, 24 bytes, Stack size 16 bytes, faddsub.o(x$fpl$frsb), UNUSED)
@@ -748,7 +751,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_fsub
 </UL>
 <BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_mat_sub_f32
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanInv
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanF
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;jacobianHph1
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;jacobianAph1

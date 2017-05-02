@@ -1,7 +1,6 @@
 #include "system_MKL25Z4.h"             // Keil::Device:Startup
 #include "MKL25Z4.h"                    // Device header
-//#include "kalman.h"
-#include "serial_com.h"
+#include "kalman.h"
 #include "uart.h"
 #include "stdio.h"
 
@@ -17,16 +16,15 @@ void uart_gpio_init(void)
 int main()
 {	
 	uart_gpio_init();
-	kalmanInit();
-
-	recVec(Z_k.pData,_NOI_);
-	recVec(X_k.pData,_DIM_);
 	
+	kalmanInit();
 	while(1)
 	{
 		kalmanStep();
-		transmitMatrix(&X_k);
+	
 	}
+	
+	
 //	transmitMatrix(&A_k);
 //	transmitMatrix(&P_k);
 //	transmitMatrix(&W_k);
